@@ -1,0 +1,38 @@
+﻿
+<div class="row">
+    <div class="col-md-2">
+        &nbsp;
+    </div>
+    <div class="col-md-8">
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>City</th>
+                    <th>Shipped</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="order in orders">
+                    <td>
+                        {{ order.orderID }}
+                    </td>
+                    <td>
+                        {{ order.customerName }}
+                    </td>
+                    <td>
+                        {{ order.shipperCity }}
+                    </td>
+                    <td>
+                       <input type="checkbox" data-ng-model="order.isShipped" disabled="disabled">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-2">
+        &nbsp;
+    </div>
+</div>

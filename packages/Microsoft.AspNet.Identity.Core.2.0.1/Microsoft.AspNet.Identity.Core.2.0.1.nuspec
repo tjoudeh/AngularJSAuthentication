@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.AspNet.Identity.Core</id>
+    <version>2.0.1</version>
+    <title>Microsoft ASP.NET Identity Core</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <licenseUrl>http://www.microsoft.com/web/webpi/eula/aspnetcomponent_rtw_ENU.htm</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Core interfaces for ASP.NET Identity.</description>
+    <summary>Core interfaces for ASP.NET Identity.</summary>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <tags>Identity Membership</tags>
+  </metadata>
+</package>

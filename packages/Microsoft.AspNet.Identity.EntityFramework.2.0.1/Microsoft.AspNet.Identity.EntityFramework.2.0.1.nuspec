@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.AspNet.Identity.EntityFramework</id>
+    <version>2.0.1</version>
+    <title>Microsoft ASP.NET Identity EntityFramework</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <licenseUrl>http://www.microsoft.com/web/webpi/eula/aspnetcomponent_rtw_ENU.htm</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>ASP.NET Identity providers that use Entity Framework.</description>
+    <summary>ASP.NET Identity providers that use Entity Framework.</summary>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <tags>Identity Membership</tags>
+    <dependencies>
+      <dependency id="Microsoft.AspNet.Identity.Core" version="2.0.1" />
+      <dependency id="EntityFramework" version="6.1.0" />
+    </dependencies>
+  </metadata>
+</package>

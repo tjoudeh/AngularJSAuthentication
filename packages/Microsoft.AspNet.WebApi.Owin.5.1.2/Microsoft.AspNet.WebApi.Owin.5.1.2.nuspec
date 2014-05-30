@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.AspNet.WebApi.Owin</id>
+    <version>5.1.2</version>
+    <title>Microsoft ASP.NET Web API 2.1 OWIN</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <licenseUrl>http://www.microsoft.com/web/webpi/eula/aspnetcomponent_rtw_ENU.htm</licenseUrl>
+    <projectUrl>http://www.asp.net/web-api</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>This package allows you to host ASP.NET Web API within an OWIN server and provides access to additional OWIN features.</description>
+    <summary>This package allows you to host ASP.NET Web API within an OWIN server and provides access to additional OWIN features.</summary>
+    <releaseNotes>Please visit http://go.microsoft.com/fwlink/?LinkId=389866 to view the release notes.</releaseNotes>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <language>en-US</language>
+    <tags>Microsoft AspNet WebApi AspNetWebApi OWIN</tags>
+    <dependencies>
+      <dependency id="Microsoft.AspNet.WebApi.Core" version="[5.1.2, 5.2.0)" />
+      <dependency id="Microsoft.Owin" version="2.1.0" />
+      <dependency id="Owin" version="1.0" />
+    </dependencies>
+  </metadata>
+</package>

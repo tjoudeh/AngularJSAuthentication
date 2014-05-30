@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.AspNet.Identity.Owin</id>
+    <version>2.0.1</version>
+    <title>Microsoft ASP.NET Identity Owin</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <licenseUrl>http://www.microsoft.com/web/webpi/eula/aspnetcomponent_rtw_ENU.htm</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Owin implementation for ASP.NET Identity.</description>
+    <summary>Owin implementation for ASP.NET Identity.</summary>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <tags>Identity Membership</tags>
+    <dependencies>
+      <dependency id="Microsoft.AspNet.Identity.Core" version="2.0.1" />
+      <dependency id="Microsoft.Owin.Security" version="2.1.0" />
+      <dependency id="Microsoft.Owin.Security.Cookies" version="2.1.0" />
+      <dependency id="Microsoft.Owin.Security.OAuth" version="2.1.0" />
+    </dependencies>
+  </metadata>
+</package>
