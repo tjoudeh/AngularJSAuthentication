@@ -131,7 +131,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <Content Include=".gitignore" />
     <None Include="Properties\PublishProfiles\ngAuthenticationAPI.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -6,4 +6,6 @@ app.controller('indexController', ['$scope', '$location', 'authService', functio
         $location.path('/home');
     }
 
+    $scope.authentication = authService.authentication;
+
 }]);

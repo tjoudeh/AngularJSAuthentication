@@ -19,7 +19,7 @@ namespace AngularJSAuthentication.API.Controllers
 
             var userName = principal.Claims.Where(c => c.Type == "sub").Single().Value;
 
-            return Ok(Order.CreateOrders(userName));
+            return Ok(Order.CreateOrders());
         }
 
     }
@@ -30,21 +30,20 @@ namespace AngularJSAuthentication.API.Controllers
     public class Order
     {
         public int OrderID { get; set; }
-        public string OrderFor { get; set; }
         public string CustomerName { get; set; }
         public string ShipperCity { get; set; }
         public Boolean IsShipped { get; set; }
 
 
-        public static List<Order> CreateOrders(string orderFor)
+        public static List<Order> CreateOrders()
         {
             List<Order> OrderList = new List<Order> 
             {
-                new Order {OrderID = 10248, OrderFor = orderFor, CustomerName = "Taiseer Joudeh", ShipperCity = "Amman", IsShipped = true },
-                new Order {OrderID = 10249, OrderFor = orderFor, CustomerName = "Ahmad Hasan", ShipperCity = "Dubai", IsShipped = false},
-                new Order {OrderID = 10250, OrderFor = orderFor,CustomerName = "Tamer Yaser", ShipperCity = "Jeddah", IsShipped = false },
-                new Order {OrderID = 10251, OrderFor = orderFor,CustomerName = "Lina Majed", ShipperCity = "Abu Dhabi", IsShipped = false},
-                new Order {OrderID = 10252, OrderFor = orderFor,CustomerName = "Yasmeen Rami", ShipperCity = "Kuwait", IsShipped = true}
+                new Order {OrderID = 10248, CustomerName = "Taiseer Joudeh", ShipperCity = "Amman", IsShipped = true },
+                new Order {OrderID = 10249, CustomerName = "Ahmad Hasan", ShipperCity = "Dubai", IsShipped = false},
+                new Order {OrderID = 10250,CustomerName = "Tamer Yaser", ShipperCity = "Jeddah", IsShipped = false },
+                new Order {OrderID = 10251,CustomerName = "Lina Majed", ShipperCity = "Abu Dhabi", IsShipped = false},
+                new Order {OrderID = 10252,CustomerName = "Yasmeen Rami", ShipperCity = "Kuwait", IsShipped = true}
             };
 
             return OrderList;

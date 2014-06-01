@@ -1,11 +1,11 @@
 ﻿'use strict';
-app.factory('authService', ['$http', '$q', '$rootScope', 'localStorageService', function ($http, $q, $rootScope, localStorageService) {
+app.factory('authService', ['$http', '$q', 'localStorageService', function ($http, $q, localStorageService) {
 
     //var serviceBase = 'http://localhost:26264/';
     var serviceBase = 'http://ngauthenticationapi.azurewebsites.net/';
     var authServiceFactory = {};
 
-    $rootScope.authentication = {
+    var _authentication = {
         isAuth: false,
         userName : ""
     };
@@ -30,8 +30,8 @@ app.factory('authService', ['$http', '$q', '$rootScope', 'localStorageService', 
 
             localStorageService.set('authorizationData', { token: response.access_token, userName: loginData.userName });
 
-            $rootScope.authentication.isAuth = true;
-            $rootScope.authentication.userName = loginData.userName;
+            _authentication.isAuth = true;
+            _authentication.userName = loginData.userName;
 
             deferred.resolve(response);
 
@@ -47,8 +47,9 @@ app.factory('authService', ['$http', '$q', '$rootScope', 'localStorageService', 
     var _logOut = function () {
 
         localStorageService.remove('authorizationData');
-        $rootScope.authentication.isAuth = false;
-        $rootScope.authentication.userName = "";
+
+        _authentication.isAuth = false;
+        _authentication.userName = "";
 
     };
 
@@ -57,8 +58,8 @@ app.factory('authService', ['$http', '$q', '$rootScope', 'localStorageService', 
         var authData = localStorageService.get('authorizationData');
         if (authData)
         {
-            $rootScope.authentication.isAuth = true;
-            $rootScope.authentication.userName = authData.userName;
+            _authentication.isAuth = true;
+            _authentication.userName = authData.userName;
         }
 
     }
@@ -67,6 +68,7 @@ app.factory('authService', ['$http', '$q', '$rootScope', 'localStorageService', 
     authServiceFactory.login = _login;
     authServiceFactory.logOut = _logOut;
     authServiceFactory.fillAuthData = _fillAuthData;
+    authServiceFactory.authentication = _authentication;
 
     return authServiceFactory;
 }]);

@@ -1,5 +1,5 @@
 ﻿'use strict';
-app.factory('ordersService', ['$http', 'localStorageService', function ($http, localStorageService) {
+app.factory('ordersService', ['$http', function ($http) {
 
     //var serviceBase = 'http://localhost:26264/';
     var serviceBase = 'http://ngauthenticationapi.azurewebsites.net/';

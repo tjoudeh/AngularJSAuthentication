@@ -2,8 +2,8 @@
 <html data-ng-app="AngularAuthApp">
 <head>
 
-    <meta name="keywords" content="angularjs,SPA,Single Page Application,bootstrap,bootstrap ui,tutorial,JS framework,foursquare,foursquare api,api,web api,Taiseer Joudeh" />
-    <meta name="description" content="SPA built using angularjs, this tutorial integrates with foursquare APIs, back end built using Asp.net web api,creatd by Taiseer Joudeh" />
+    <meta name="keywords" content="angularjs,SPA,Single Page Application,authentication,bearer token authentication,OWIN,bootstrap,bootstrap ui,tutorial,JS framework,ASP.NET WEB API 2,Taiseer Joudeh" />
+    <meta name="description" content="SPA built using angularjs,authentication is done using bearer token,back end built using Asp.net web api 2 and OWIN Framework,creatd by Taiseer Joudeh" />
     <meta content="IE=edge, chrome=1" http-equiv="X-UA-Compatible" />
     <title>AngularJS Authentication</title>
     <link href="content/css/bootstrap.min.css" rel="stylesheet" />
@@ -16,15 +16,12 @@
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" data-ng-controller="indexController">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+                  <button class="btn btn-success navbar-toggle" data-ng-click="navbarExpanded = !navbarExpanded">
+                        <span class="glyphicon glyphicon-chevron-down"></span>
+                    </button>
                 <a class="navbar-brand" href="#/">Home</a>
             </div>
-            <div class="collapse navbar-collapse">
+            <div class="collapse navbar-collapse" data-collapse="!navbarExpanded">
                 <ul class="nav navbar-nav navbar-right">
                     <li data-ng-hide="!authentication.isAuth"><a href="#">Welcome {{authentication.userName}}</a></li>
                     <li data-ng-hide="!authentication.isAuth"><a href="#/orders">My Orders</a></li>
@@ -32,17 +29,15 @@
                     <li data-ng-hide="authentication.isAuth"> <a href="#/login">Login</a></li>
                     <li data-ng-hide="authentication.isAuth"> <a href="#/signup">Sign Up</a></li>
                 </ul>
-            </div><!--/.nav-collapse -->
+            </div>
         </div>
     </div>
-
-
     <div class="jumbotron">
         <div class="container">
             <div class="page-header text-center">
                 <h1>AngularJS Authentication</h1>
             </div>
-            <p>This single page application is built using AngularJS, it is using OAuth bearer token authentication, ASP.NET Web API 2, OWIN Server, and ASP.NET Identity to generate tokens and register users.</p>
+            <p>This single page application is built using AngularJS, it is using OAuth bearer token authentication, ASP.NET Web API 2, OWIN middleware, and ASP.NET Identity to generate tokens and register users.</p>
         </div>
     </div>
 
@@ -70,9 +65,8 @@
 
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-resource.min.js"></script>
     <script src="scripts/angular-local-storage.min.js"></script>
-<script src="scripts/loading-bar.min.js"></script>
+    <script src="scripts/loading-bar.min.js"></script>
 
     <!-- Load app main script -->
     <script src="app/app.js"></script>

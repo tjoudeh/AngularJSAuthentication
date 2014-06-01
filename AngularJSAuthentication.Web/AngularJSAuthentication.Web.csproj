@@ -75,7 +75,6 @@
     <Content Include="content\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="content\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="content\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include=".gitignore" />
     <None Include="Properties\PublishProfiles\ngauthenticationweb.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
