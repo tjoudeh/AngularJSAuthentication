@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace AngularJSAuthentication.API.Controllers
@@ -42,6 +43,22 @@ namespace AngularJSAuthentication.API.Controllers
 
              return Ok();
         }
+
+        //public IHttpActionResult Get() {
+
+        //    var result =  new
+        //    {
+        //        IP = HttpContext.Current.Request.UserHostAddress,
+        //        HostName =    HttpContext.Current.Request.UserHostName,
+        //        Url = HttpContext.Current.Request.Url.Host,
+        //        XOriginalURL = HttpContext.Current.Request.Headers.GetValues("X-Original-URL"),
+        //        HeaderKeys = HttpContext.Current.Request.Headers.AllKeys,
+        //        Origin = HttpContext.Current.Request.Headers.GetValues("Origin")
+        //    };
+
+        //    return Ok(result);
+
+        //}
 
         protected override void Dispose(bool disposing)
         {

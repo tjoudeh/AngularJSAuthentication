@@ -4,6 +4,7 @@ using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -23,6 +24,7 @@ namespace AngularJSAuthentication.API
             WebApiConfig.Register(config);
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             app.UseWebApi(config);
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<AuthContext, AngularJSAuthentication.API.Migrations.Configuration>());
 
         }
 
@@ -33,8 +35,9 @@ namespace AngularJSAuthentication.API
             
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/token"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
-                Provider = new SimpleAuthorizationServerProvider()
+                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30),
+                Provider = new SimpleAuthorizationServerProvider(),
+                RefreshTokenProvider = new SimpleRefreshTokenProvider()
             };
             
             // Token Generation
@@ -44,4 +47,5 @@ namespace AngularJSAuthentication.API
 
         }
     }
+
 }
