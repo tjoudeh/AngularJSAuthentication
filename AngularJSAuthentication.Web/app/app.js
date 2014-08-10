@@ -33,13 +33,19 @@ app.config(function ($routeProvider) {
         templateUrl: "/app/views/tokens.html"
     });
 
+    $routeProvider.when("/associate", {
+        controller: "associateController",
+        templateUrl: "/app/views/associate.html"
+    });
+
     $routeProvider.otherwise({ redirectTo: "/home" });
 
 });
 
 //var serviceBase = 'http://localhost:26264/';
+var serviceBase = 'http://ngauthenticationapi.azurewebsites.net/';
 app.constant('ngAuthSettings', {
-    apiServiceBaseUri: 'http://ngauthenticationapi.azurewebsites.net/',
+    apiServiceBaseUri: serviceBase,
     clientId: 'ngAuthApp'
 });
 

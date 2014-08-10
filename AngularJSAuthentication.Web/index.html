@@ -9,6 +9,8 @@
     <link href="content/css/bootstrap.min.css" rel="stylesheet" />
     <link href="content/css/site.css" rel="stylesheet" />
     <link href="content/css/loading-bar.css" rel="stylesheet" />
+    <link href="content/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="content/css/social-buttons.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 </head>
 <body>
@@ -25,7 +27,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li data-ng-hide="!authentication.isAuth"><a href="#">Welcome {{authentication.userName}}</a></li>
                     <li data-ng-hide="!authentication.isAuth"><a href="#/orders">My Orders</a></li>
-                     <li data-ng-hide="!authentication.isAuth"><a href="#/refresh">Refresh Token</a></li>
+                    <li data-ng-hide="!authentication.isAuth"><a href="#/refresh">Refresh Token</a></li>
                     <li data-ng-hide="!authentication.isAuth"><a href="" data-ng-click="logOut()">Logout</a></li>
                     <li data-ng-hide="authentication.isAuth"> <a href="#/login">Login</a></li>
                     <li data-ng-hide="authentication.isAuth"> <a href="#/signup">Sign Up</a></li>
@@ -70,21 +72,22 @@
     <script src="scripts/loading-bar.min.js"></script>
 
     <!-- Load app main script -->
-    <script src="app/app.js?v=1"></script>
+    <script src="app/app.js?v=2"></script>
 
     <!-- Load services -->
-    <script src="app/services/authInterceptorService.js?v=1"></script>
-    <script src="app/services/authService.js?v=1"></script>
-    <script src="app/services/ordersService.js?v=1"></script>
-    <script src="app/services/tokensManagerService.js?v=1"></script>
+    <script src="app/services/authInterceptorService.js?v=2"></script>
+    <script src="app/services/authService.js?v=2"></script>
+    <script src="app/services/ordersService.js?v=2"></script>
+    <script src="app/services/tokensManagerService.js?v=2"></script>
     <!-- Load controllers -->
-    <script src="app/controllers/indexController.js?v=1"></script>
-    <script src="app/controllers/homeController.js?v=1"></script>
-    <script src="app/controllers/loginController.js?v=1"></script>
-    <script src="app/controllers/signupController.js?v=1"></script>
-    <script src="app/controllers/ordersController.js?v=1"></script>
-    <script src="app/controllers/refreshController.js?v=1"></script>
-    <script src="app/controllers/tokensManagerController.js?v=1"></script>
+    <script src="app/controllers/indexController.js?v=2"></script>
+    <script src="app/controllers/homeController.js?v=2"></script>
+    <script src="app/controllers/loginController.js?v=2"></script>
+    <script src="app/controllers/signupController.js?v=2"></script>
+    <script src="app/controllers/ordersController.js?v=2"></script>
+    <script src="app/controllers/refreshController.js?v=2"></script>
+    <script src="app/controllers/tokensManagerController.js?v=2"></script>
+    <script src="app/controllers/associateController.js?v=2"></script>
     <!-- Load custom filters -->
     <!-- Load custom directives -->
 

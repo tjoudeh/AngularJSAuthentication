@@ -1,14 +1,30 @@
-﻿<form class="form-login" role="form">
-    <h2 class="form-login-heading">Login</h2>
-    <input type="text" class="form-control" placeholder="Username" data-ng-model="loginData.userName" required autofocus>
-    <input type="password" class="form-control" placeholder="Password" data-ng-model="loginData.password" required>
-    <div class="checkbox">
-        <label>
-            <input type="checkbox" data-ng-model="loginData.useRefreshTokens"><strong> Use Refresh Tokens</strong>
-        </label>
-    </div>
-    <button class="btn btn-lg btn-info btn-block" type="submit" data-ng-click="login()">Login</button>
-    <div data-ng-hide="message == ''" class="alert alert-danger">
-        {{message}}
+﻿<form role="form">
+    <div class="row">
+        <div class="col-md-2">
+            &nbsp;
+        </div>
+        <div class="col-md-4">
+            <h2 class="form-login-heading">Login</h2>
+            <input type="text" class="form-control" placeholder="Username" data-ng-model="loginData.userName" required autofocus>
+            <input type="password" class="form-control" placeholder="Password" data-ng-model="loginData.password" required>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" data-ng-model="loginData.useRefreshTokens"><strong> Use Refresh Tokens</strong>
+                </label>
+            </div>
+            <button class="btn btn-md btn-info btn-block" type="submit" data-ng-click="login()">Login</button>
+              <div data-ng-hide="message == ''" class="alert alert-danger">
+                {{message}}
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h2 class="form-login-heading">Social Logins</h2>
+            <p>Or you can login using one of the social logins bleow</p>
+            <button class="btn btn-large btn-facebook btn-block" type="button" data-ng-click="authExternalProvider('Facebook')"><i class="fa fa-facebook"></i> | Connect with Facebook</button>
+            <button class="btn btn-large btn-google-plus btn-block" type="button" data-ng-click="authExternalProvider('Google')"><i class="fa fa-google-plus"></i> | Connect with Google+</button>
+        </div>
+        <div class="col-md-2">
+            &nbsp;
+        </div>
     </div>
 </form>
