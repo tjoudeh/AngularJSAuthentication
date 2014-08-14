@@ -17,26 +17,25 @@ app.factory('authInterceptorService', ['$q', '$injector','$location', 'localStor
     }
 
     var _responseError = function (rejection) {
+        var deferred = $q.defer();
         if (rejection.status === 401) {
             var authService = $injector.get('authService');
             var authData = localStorageService.get('authorizationData');
 
-            if (authData) {
-                if (authData.useRefreshTokens) {
-                    authService.refreshToken().then(function (response) {
-                        var deferred = $q.defer();
-                        _retryHttpRequest(rejection.config, deferred);
-                        return deferred.promise;
-                    }, function () {
-                        $location.path('/login');
-                        return $q.reject(rejection);
-                    });
-                }
+            if (authData && authData.useRefreshTokens) {
+                authService.refreshToken().then(function (response) {
+                    _retryHttpRequest(rejection.config, deferred);
+                }, function () {
+                    $location.path('/login');
+                    deferred.reject(rejection);
+                });
             }
             authService.logOut();
             $location.path('/login');
+        } else {
+            deferred.reject(rejection);
         }
-        return $q.reject(rejection);
+        return deferred.promise;
     }
 
     var _retryHttpRequest = function (config, deferred) {
