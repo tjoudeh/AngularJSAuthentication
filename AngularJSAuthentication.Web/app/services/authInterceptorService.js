@@ -29,6 +29,8 @@ app.factory('authInterceptorService', ['$q', '$injector','$location', 'localStor
                     $location.path('/login');
                     deferred.reject(rejection);
                 });
+            } else {
+                deferred.reject();
             }
             authService.logOut();
             $location.path('/login');
