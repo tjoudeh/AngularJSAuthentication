@@ -13,6 +13,9 @@ namespace AngularJSAuthentication.ResourceServer
 {
     public class Startup
     {
+
+        public static OAuthBearerAuthenticationOptions OAuthBearerOptions { get; private set; }
+
         public void Configuration(IAppBuilder app)
         {
             HttpConfiguration config = new HttpConfiguration();
@@ -27,10 +30,9 @@ namespace AngularJSAuthentication.ResourceServer
 
         private void ConfigureOAuth(IAppBuilder app)
         {
+            OAuthBearerOptions = new OAuthBearerAuthenticationOptions();
             //Token Consumption
-            app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions
-            {
-            });
+            app.UseOAuthBearerAuthentication(OAuthBearerOptions);
         }
     }
 }

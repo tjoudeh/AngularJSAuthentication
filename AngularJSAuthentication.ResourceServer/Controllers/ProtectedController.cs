@@ -15,6 +15,9 @@ namespace AngularJSAuthentication.ResourceServer.Controllers
         [Route("")]
         public IEnumerable<object> Get()
         {
+            //string token = "";
+            //Microsoft.Owin.Security.AuthenticationTicket ticket = Startup.OAuthBearerOptions.AccessTokenFormat.Unprotect(token);
+
             var identity = User.Identity as ClaimsIdentity;
            
             return identity.Claims.Select(c => new
