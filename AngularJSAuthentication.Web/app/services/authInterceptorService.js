@@ -2,6 +2,7 @@
 app.factory('authInterceptorService', ['$q', '$injector','$location', 'localStorageService', function ($q, $injector,$location, localStorageService) {
 
     var authInterceptorServiceFactory = {};
+    var $http;
 
     var _request = function (config) {
 
@@ -16,20 +17,29 @@ app.factory('authInterceptorService', ['$q', '$injector','$location', 'localStor
     }
 
     var _responseError = function (rejection) {
+        var deferred = $q.defer();
         if (rejection.status === 401) {
             var authService = $injector.get('authService');
-            var authData = localStorageService.get('authorizationData');
-
-            if (authData) {
-                if (authData.useRefreshTokens) {
-                    $location.path('/refresh');
-                    return $q.reject(rejection);
-                }
-            }
-            authService.logOut();
-            $location.path('/login');
+            authService.refreshToken().then(function (response) {
+                _retryHttpRequest(rejection.config, deferred);
+            }, function () {
+                authService.logOut();
+                $location.path('/login');
+                deferred.reject(rejection);
+            });
+        } else {
+            deferred.reject(rejection);
         }
-        return $q.reject(rejection);
+        return deferred.promise;
+    }
+
+    var _retryHttpRequest = function (config, deferred) {
+        $http = $http || $injector.get('$http');
+        $http(config).then(function (response) {
+            deferred.resolve(response);
+        }, function (response) {
+            deferred.reject(response);
+        });
     }
 
     authInterceptorServiceFactory.request = _request;

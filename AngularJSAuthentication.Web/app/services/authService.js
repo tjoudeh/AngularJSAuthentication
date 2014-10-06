@@ -1,7 +1,8 @@
 ﻿'use strict';
-app.factory('authService', ['$http', '$q', 'localStorageService', 'ngAuthSettings', function ($http, $q, localStorageService, ngAuthSettings) {
+app.factory('authService', ['$q', '$injector', 'localStorageService', 'ngAuthSettings', function ($q, $injector, localStorageService, ngAuthSettings) {
 
     var serviceBase = ngAuthSettings.apiServiceBaseUri;
+    var $http;
     var authServiceFactory = {};
 
     var _authentication = {
@@ -20,6 +21,7 @@ app.factory('authService', ['$http', '$q', 'localStorageService', 'ngAuthSetting
 
         _logOut();
 
+        $http = $http || $injector.get('$http');
         return $http.post(serviceBase + 'api/account/register', registration).then(function (response) {
             return response;
         });
@@ -36,6 +38,7 @@ app.factory('authService', ['$http', '$q', 'localStorageService', 'ngAuthSetting
 
         var deferred = $q.defer();
 
+        $http = $http || $injector.get('$http');
         $http.post(serviceBase + 'token', data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).success(function (response) {
 
             if (loginData.useRefreshTokens) {
@@ -85,25 +88,25 @@ app.factory('authService', ['$http', '$q', 'localStorageService', 'ngAuthSetting
 
         var authData = localStorageService.get('authorizationData');
 
-        if (authData) {
+        if (authData && authData.useRefreshTokens) {
 
-            if (authData.useRefreshTokens) {
+            var data = "grant_type=refresh_token&refresh_token=" + authData.refreshToken + "&client_id=" + ngAuthSettings.clientId;
 
-                var data = "grant_type=refresh_token&refresh_token=" + authData.refreshToken + "&client_id=" + ngAuthSettings.clientId;
+            localStorageService.remove('authorizationData');
 
-                localStorageService.remove('authorizationData');
+            $http = $http || $injector.get('$http');
+            $http.post(serviceBase + 'token', data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).success(function (response) {
 
-                $http.post(serviceBase + 'token', data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }).success(function (response) {
+                localStorageService.set('authorizationData', { token: response.access_token, userName: response.userName, refreshToken: response.refresh_token, useRefreshTokens: true });
 
-                    localStorageService.set('authorizationData', { token: response.access_token, userName: response.userName, refreshToken: response.refresh_token, useRefreshTokens: true });
+                deferred.resolve(response);
 
-                    deferred.resolve(response);
-
-                }).error(function (err, status) {
-                    _logOut();
-                    deferred.reject(err);
-                });
-            }
+            }).error(function (err, status) {
+                _logOut();
+                deferred.reject(err);
+            });
+        } else {
+            deferred.reject();
         }
 
         return deferred.promise;
