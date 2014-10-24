@@ -1,5 +1,4 @@
 ﻿using AngularJSAuthentication.API.Entities;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 using System.Collections.Generic;
@@ -14,8 +13,7 @@ namespace AngularJSAuthentication.API.Providers
         public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
 
-            string clientId = string.Empty;
-            string clientSecret = string.Empty;
+            string clientId, clientSecret;
             Client client;
 
             if (!context.TryGetBasicCredentials(out clientId, out clientSecret))
@@ -50,13 +48,10 @@ namespace AngularJSAuthentication.API.Providers
                     context.SetError("invalid_clientId", "Client secret should be sent.");
                     return Task.FromResult<object>(null);
                 }
-                else
+                else if (client.Secret != Helper.GetHash(clientSecret))
                 {
-                    if (client.Secret != Helper.GetHash(clientSecret))
-                    {
-                        context.SetError("invalid_clientId", "Client secret is invalid.");
-                        return Task.FromResult<object>(null);
-                    }
+                    context.SetError("invalid_clientId", "Client secret is invalid.");
+                    return Task.FromResult<object>(null);
                 }
             }
 
@@ -82,7 +77,7 @@ namespace AngularJSAuthentication.API.Providers
 
             using (var _repo = new AuthRepository())
             {
-                IdentityUser user = await _repo.FindUser(context.UserName, context.Password);
+                var user = await _repo.FindUser(context.UserName, context.Password);
 
                 if (user == null)
                 {
@@ -133,16 +128,5 @@ namespace AngularJSAuthentication.API.Providers
 
             return Task.FromResult<object>(null);
         }
-
-        public override Task TokenEndpoint(OAuthTokenEndpointContext context)
-        {
-            foreach (var property in context.Properties.Dictionary)
-            {
-                context.AdditionalResponseParameters.Add(property.Key, property.Value);
-            }
-
-            return Task.FromResult<object>(null);
-        }
-
     }
 }
