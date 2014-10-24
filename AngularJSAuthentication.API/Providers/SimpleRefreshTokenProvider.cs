@@ -1,12 +1,7 @@
 ﻿using AngularJSAuthentication.API.Entities;
-using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Infrastructure;
 using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace AngularJSAuthentication.API.Providers
 {
@@ -24,11 +19,11 @@ namespace AngularJSAuthentication.API.Providers
 
             var refreshTokenId = Guid.NewGuid().ToString("n");
 
-            using (AuthRepository _repo = new AuthRepository())
+            using (var _repo = new AuthRepository())
             {
                 var refreshTokenLifeTime = context.OwinContext.Get<string>("as:clientRefreshTokenLifeTime"); 
                
-                var token = new RefreshToken() 
+                var token = new RefreshToken 
                 { 
                     Id = Helper.GetHash(refreshTokenId),
                     ClientId = clientid, 
@@ -58,9 +53,9 @@ namespace AngularJSAuthentication.API.Providers
             var allowedOrigin = context.OwinContext.Get<string>("as:clientAllowedOrigin");
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
-            string hashedTokenId = Helper.GetHash(context.Token);
+            var hashedTokenId = Helper.GetHash(context.Token);
 
-            using (AuthRepository _repo = new AuthRepository())
+            using (var _repo = new AuthRepository())
             {
                 var refreshToken = await _repo.FindRefreshToken(hashedTokenId);
 
@@ -68,7 +63,7 @@ namespace AngularJSAuthentication.API.Providers
                 {
                     //Get protectedTicket from refreshToken class
                     context.DeserializeTicket(refreshToken.ProtectedTicket);
-                    var result = await _repo.RemoveRefreshToken(hashedTokenId);
+                    await _repo.RemoveRefreshToken(hashedTokenId);
                 }
             }
         }
