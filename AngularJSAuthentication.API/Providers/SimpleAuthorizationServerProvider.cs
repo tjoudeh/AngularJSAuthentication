@@ -2,7 +2,6 @@
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -62,6 +61,7 @@ namespace AngularJSAuthentication.API.Providers
                 return Task.FromResult<object>(null);
             }
 
+            context.OwinContext.Set("as:client_id", clientId);
             context.OwinContext.Set("as:clientAllowedOrigin", client.AllowedOrigin);
             context.OwinContext.Set("as:clientRefreshTokenLifeTime", client.RefreshTokenLifeTime.ToString());
 
@@ -95,7 +95,7 @@ namespace AngularJSAuthentication.API.Providers
 
         public override Task GrantRefreshToken(OAuthGrantRefreshTokenContext context)
         {
-            var originalClient = context.Ticket.Properties.Dictionary["as:client_id"];
+            var originalClient = context.OwinContext.Get<string>("as:client_id");
             var currentClient = context.ClientId;
 
             if (originalClient != currentClient)

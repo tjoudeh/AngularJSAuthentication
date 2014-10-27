@@ -2,6 +2,7 @@
 using Microsoft.Owin.Security.Infrastructure;
 using System;
 using System.Threading.Tasks;
+using Microsoft.Owin.Security.OAuth;
 
 namespace AngularJSAuthentication.API.Providers
 {
@@ -10,7 +11,7 @@ namespace AngularJSAuthentication.API.Providers
 
         public async Task CreateAsync(AuthenticationTokenCreateContext context)
         {
-            var clientid = context.Ticket.Properties.Dictionary["as:client_id"];
+            var clientid = context.OwinContext.Get<string>("as:client_id");
 
             if (string.IsNullOrEmpty(clientid))
             {
@@ -27,16 +28,10 @@ namespace AngularJSAuthentication.API.Providers
                 { 
                     Id = Helper.GetHash(refreshTokenId),
                     ClientId = clientid, 
-                    Subject = context.Ticket.Identity.Name,
-                    IssuedUtc = DateTime.UtcNow,
+                    UserName = context.Ticket.Identity.Name,
                     ExpiresUtc = DateTime.UtcNow.AddMinutes(Convert.ToDouble(refreshTokenLifeTime)) 
                 };
-
-                context.Ticket.Properties.IssuedUtc = token.IssuedUtc;
-                context.Ticket.Properties.ExpiresUtc = token.ExpiresUtc;
                 
-                token.ProtectedTicket = context.SerializeTicket();
-
                 var result = await _repo.AddRefreshToken(token);
 
                 if (result)
@@ -49,7 +44,6 @@ namespace AngularJSAuthentication.API.Providers
 
         public async Task ReceiveAsync(AuthenticationTokenReceiveContext context)
         {
-
             var allowedOrigin = context.OwinContext.Get<string>("as:clientAllowedOrigin");
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
@@ -59,11 +53,28 @@ namespace AngularJSAuthentication.API.Providers
             {
                 var refreshToken = await _repo.FindRefreshToken(hashedTokenId);
 
-                if (refreshToken != null )
+                if (refreshToken != null)
                 {
-                    //Get protectedTicket from refreshToken class
-                    context.DeserializeTicket(refreshToken.ProtectedTicket);
-                    await _repo.RemoveRefreshToken(hashedTokenId);
+
+                    var user = await _repo.FindUserByName(refreshToken.UserName);
+                    if (user != null)
+                    {
+                        var ticket = AuthenticationTicketProvider.GetTicket(user, OAuthDefaults.AuthenticationType);
+                        // workaround for date expiry check in OAuthAuthorizationServerHandler.InvokeTokenEndpointRefreshTokenGrantAsync()
+                        // that will raise error if ticket.Properties.ExpiresUtc < currentUtc
+                        ticket.Properties.ExpiresUtc = DateTime.UtcNow.AddMinutes(10);
+                        context.SetTicket(ticket);
+
+                        await _repo.RemoveRefreshToken(hashedTokenId);
+                    }
+                    else
+                    {
+                        // TODO: log suspicious activity
+                    }
+                }
+                else
+                {
+                    // TODO: log suspicious activity
                 }
             }
         }
