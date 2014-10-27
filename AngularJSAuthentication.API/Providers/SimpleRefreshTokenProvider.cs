@@ -12,7 +12,7 @@ namespace AngularJSAuthentication.API.Providers
     public class SimpleRefreshTokenProvider : IAuthenticationTokenProvider
     {
 
-        public async Task CreateAsync(AuthenticationTokenCreateContext context)
+        public void Create(AuthenticationTokenCreateContext context)
         {
             var clientid = GetClientId(context);
 
@@ -58,7 +58,7 @@ namespace AngularJSAuthentication.API.Providers
             return context.Request.Headers.Get("User-Agent").Substring(0, 50);
         }
 
-        public async Task ReceiveAsync(AuthenticationTokenReceiveContext context)
+        public void Receive(AuthenticationTokenReceiveContext context)
         {
             var allowedOrigin = context.OwinContext.Get<string>(Constants.Clients.AllowedOrigin);
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
@@ -67,7 +67,7 @@ namespace AngularJSAuthentication.API.Providers
 
             using (var _repo = new AuthRepository())
             {
-                var refreshToken = await _repo.FindRefreshToken(hashedTokenId);
+                var refreshToken = _repo.FindRefreshToken(hashedTokenId);
 
                 if (refreshToken == null)
                 {
@@ -81,7 +81,7 @@ namespace AngularJSAuthentication.API.Providers
                     // TODO: log suspicious activity
                     return;
                 }
-                var user = await _repo.FindUserByName(refreshToken.UserName);
+                var user = _repo.FindUserByName(refreshToken.UserName);
                 if (user == null)
                 {
                     // Refresh token was issued for the other user
@@ -107,14 +107,17 @@ namespace AngularJSAuthentication.API.Providers
             repo.RemoveRefreshToken(previousTokens.Union(staleTokens).ToArray());
         }
 
-        public void Create(AuthenticationTokenCreateContext context)
+
+        public Task CreateAsync(AuthenticationTokenCreateContext context)
         {
-            throw new NotImplementedException();
+            Create(context);
+            return Task.FromResult<object>(null);
         }
 
-        public void Receive(AuthenticationTokenReceiveContext context)
+        public Task ReceiveAsync (AuthenticationTokenReceiveContext context)
         {
-            throw new NotImplementedException();
+            Receive(context);
+            return Task.FromResult<object>(null);
         }
     }
 }
