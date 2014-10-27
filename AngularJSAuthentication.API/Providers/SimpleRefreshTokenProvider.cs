@@ -3,6 +3,7 @@ using Microsoft.Owin.Security.Infrastructure;
 using System;
 using System.Threading.Tasks;
 using Microsoft.Owin.Security.OAuth;
+using Microsoft.Owin.Security.Provider;
 
 namespace AngularJSAuthentication.API.Providers
 {
@@ -11,7 +12,7 @@ namespace AngularJSAuthentication.API.Providers
 
         public async Task CreateAsync(AuthenticationTokenCreateContext context)
         {
-            var clientid = context.OwinContext.Get<string>("as:client_id");
+            var clientid = GetClientId(context);
 
             if (string.IsNullOrEmpty(clientid))
             {
@@ -42,6 +43,11 @@ namespace AngularJSAuthentication.API.Providers
             }
         }
 
+        private static string GetClientId(BaseContext context)
+        {
+            return context.OwinContext.Get<string>("as:client_id");
+        }
+
         public async Task ReceiveAsync(AuthenticationTokenReceiveContext context)
         {
             var allowedOrigin = context.OwinContext.Get<string>("as:clientAllowedOrigin");
@@ -53,29 +59,35 @@ namespace AngularJSAuthentication.API.Providers
             {
                 var refreshToken = await _repo.FindRefreshToken(hashedTokenId);
 
-                if (refreshToken != null)
+                if (refreshToken == null)
                 {
-
-                    var user = await _repo.FindUserByName(refreshToken.UserName);
-                    if (user != null)
-                    {
-                        var ticket = AuthenticationTicketProvider.GetTicket(user, OAuthDefaults.AuthenticationType);
-                        // workaround for date expiry check in OAuthAuthorizationServerHandler.InvokeTokenEndpointRefreshTokenGrantAsync()
-                        // that will raise error if ticket.Properties.ExpiresUtc < currentUtc
-                        ticket.Properties.ExpiresUtc = DateTime.UtcNow.AddMinutes(10);
-                        context.SetTicket(ticket);
-
-                        await _repo.RemoveRefreshToken(hashedTokenId);
-                    }
-                    else
-                    {
-                        // TODO: log suspicious activity
-                    }
-                }
-                else
-                {
+                    // Refresh token is not valid
                     // TODO: log suspicious activity
+                    return;
                 }
+                if (refreshToken.ClientId != GetClientId(context))
+                {
+                    // Refresh token is issued to a different clientId.
+                    // TODO: log suspicious activity
+                    return;
+                }
+                var user = await _repo.FindUserByName(refreshToken.UserName);
+                if (user == null)
+                {
+                    // Refresh token was issued for the other user
+                    // TODO: log suspicious activity
+                    return;
+                }
+                var ticket = AuthenticationTicketProvider.GetTicket(user, OAuthDefaults.AuthenticationType);
+                // workaround for date expiry check in OAuthAuthorizationServerHandler.InvokeTokenEndpointRefreshTokenGrantAsync()
+                // that will raise error if ticket.Properties.ExpiresUtc < currentUtc
+                ticket.Properties.ExpiresUtc = DateTime.UtcNow.AddMinutes(10);
+
+                // If you want to add any claims specificly for refresh tokens you can do that here
+                //ticket.Identity.AddClaim(new Claim("newClaim", "newClaimValue"));
+                context.SetTicket(ticket);
+
+                await _repo.RemoveRefreshToken(hashedTokenId);
             }
         }
 
