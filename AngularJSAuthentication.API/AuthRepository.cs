@@ -41,9 +41,9 @@ namespace AngularJSAuthentication.API
             return user;
         }
 
-        public async Task<IdentityUser> FindUserByName(string userName)
+        public IdentityUser FindUserByName(string userName)
         {
-            return await _userManager.FindByNameAsync(userName);
+            return _userManager.FindByName(userName);
         }
 
         public Client FindClient(string clientId)
@@ -79,9 +79,9 @@ namespace AngularJSAuthentication.API
              return _ctx.SaveChanges() > 0;
         }
 
-        public async Task<RefreshToken> FindRefreshToken(string refreshTokenId)
+        public RefreshToken FindRefreshToken(string refreshTokenId)
         {
-            var refreshToken = await _ctx.RefreshTokens.FindAsync(refreshTokenId);
+            var refreshToken = _ctx.RefreshTokens.Find(refreshTokenId);
 
             return refreshToken;
         }
