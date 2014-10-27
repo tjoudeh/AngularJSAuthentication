@@ -58,9 +58,9 @@ namespace AngularJSAuthentication.API.Providers
                 return Task.FromResult<object>(null);
             }
 
-            context.OwinContext.Set("as:client_id", clientId);
-            context.OwinContext.Set("as:clientAllowedOrigin", client.AllowedOrigin);
-            context.OwinContext.Set("as:clientRefreshTokenLifeTime", client.RefreshTokenLifeTime.ToString());
+            context.OwinContext.Set(Constants.Clients.ClientId, clientId);
+            context.OwinContext.Set(Constants.Clients.AllowedOrigin, client.AllowedOrigin);
+            context.OwinContext.Set(Constants.Clients.RefreshTokeLifetimeKey, client.RefreshTokenLifeTime.ToString());
 
             context.Validated();
             return Task.FromResult<object>(null);
@@ -69,7 +69,7 @@ namespace AngularJSAuthentication.API.Providers
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
 
-            var allowedOrigin = context.OwinContext.Get<string>("as:clientAllowedOrigin") ?? "*";
+            var allowedOrigin = context.OwinContext.Get<string>(Constants.Clients.AllowedOrigin) ?? "*";
 
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
             IdentityUser user;

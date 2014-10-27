@@ -23,7 +23,7 @@ namespace AngularJSAuthentication.API.Providers
 
             using (var _repo = new AuthRepository())
             {
-                var refreshTokenLifeTime = context.OwinContext.Get<string>("as:clientRefreshTokenLifeTime"); 
+                var refreshTokenLifeTime = context.OwinContext.Get<string>(Constants.Clients.RefreshTokeLifetimeKey); 
                
                 var token = new RefreshToken 
                 { 
@@ -45,12 +45,12 @@ namespace AngularJSAuthentication.API.Providers
 
         private static string GetClientId(BaseContext context)
         {
-            return context.OwinContext.Get<string>("as:client_id");
+            return context.OwinContext.Get<string>(Constants.Clients.ClientId);
         }
 
         public async Task ReceiveAsync(AuthenticationTokenReceiveContext context)
         {
-            var allowedOrigin = context.OwinContext.Get<string>("as:clientAllowedOrigin");
+            var allowedOrigin = context.OwinContext.Get<string>(Constants.Clients.AllowedOrigin);
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
             var hashedTokenId = Helper.GetHash(context.Token);
