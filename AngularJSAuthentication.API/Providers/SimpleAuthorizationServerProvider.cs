@@ -1,4 +1,5 @@
 ﻿using AngularJSAuthentication.API.Entities;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 using System.Collections.Generic;
@@ -74,33 +75,23 @@ namespace AngularJSAuthentication.API.Providers
             var allowedOrigin = context.OwinContext.Get<string>("as:clientAllowedOrigin") ?? "*";
 
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
-
+            IdentityUser user;
             using (var _repo = new AuthRepository())
             {
-                var user = await _repo.FindUser(context.UserName, context.Password);
-
-                if (user == null)
-                {
-                    context.SetError("invalid_grant", "The user name or password is incorrect.");
-                    return;
-                }
+                user = await _repo.FindUser(context.UserName, context.Password);
+            }
+            if (user == null)
+            {
+                context.SetError("invalid_grant", "The user name or password is incorrect.");
+            }
+            else
+            {
+                var ticket = AuthenticationTicketProvider.GetTicket(user, OAuthDefaults.AuthenticationType);
+                context.Validated(ticket);
             }
 
-            var identity = new ClaimsIdentity(context.Options.AuthenticationType);
-            identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
-            identity.AddClaim(new Claim(ClaimTypes.Role, "user"));
-            identity.AddClaim(new Claim("sub", context.UserName));
-
-            var props = new AuthenticationProperties(new Dictionary<string, string>
-            {
-                {"as:client_id", context.ClientId ?? string.Empty},
-                {"userName", context.UserName}
-            });
-
-            var ticket = new AuthenticationTicket(identity, props);
-            context.Validated(ticket);
-
         }
+
 
         public override Task GrantRefreshToken(OAuthGrantRefreshTokenContext context)
         {
