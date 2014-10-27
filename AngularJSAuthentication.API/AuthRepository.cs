@@ -2,13 +2,10 @@
 using AngularJSAuthentication.API.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace AngularJSAuthentication.API
 {
@@ -56,19 +53,10 @@ namespace AngularJSAuthentication.API
             return client;
         }
 
-        public async Task<bool> AddRefreshToken(RefreshToken token)
+        public bool AddRefreshToken(RefreshToken token)
         {
-
-           var existingToken = _ctx.RefreshTokens.Where(r => r.UserName == token.UserName && r.ClientId == token.ClientId).SingleOrDefault();
-
-           if (existingToken != null)
-           {
-             var result = await RemoveRefreshToken(existingToken);
-           }
-          
             _ctx.RefreshTokens.Add(token);
-
-            return await _ctx.SaveChangesAsync() > 0;
+            return _ctx.SaveChanges() > 0;
         }
 
         public async Task<bool> RemoveRefreshToken(string refreshTokenId)
@@ -76,17 +64,19 @@ namespace AngularJSAuthentication.API
            var refreshToken = await _ctx.RefreshTokens.FindAsync(refreshTokenId);
 
            if (refreshToken != null) {
-               _ctx.RefreshTokens.Remove(refreshToken);
-               return await _ctx.SaveChangesAsync() > 0;
+               return RemoveRefreshToken(refreshToken);
            }
 
            return false;
         }
 
-        public async Task<bool> RemoveRefreshToken(RefreshToken refreshToken)
+        public bool RemoveRefreshToken(params RefreshToken[] refreshTokens)
         {
-            _ctx.RefreshTokens.Remove(refreshToken);
-             return await _ctx.SaveChangesAsync() > 0;
+            foreach (var refreshToken in refreshTokens)
+            {
+                _ctx.RefreshTokens.Remove(refreshToken);
+            }
+             return _ctx.SaveChanges() > 0;
         }
 
         public async Task<RefreshToken> FindRefreshToken(string refreshTokenId)
@@ -94,6 +84,25 @@ namespace AngularJSAuthentication.API
             var refreshToken = await _ctx.RefreshTokens.FindAsync(refreshTokenId);
 
             return refreshToken;
+        }
+
+        public IQueryable<RefreshToken> FindRefreshTokens(string clientId, string userName,
+            string userAgent,
+            DateTime? maxExpiresUtc = null)
+        {
+            var query = _ctx.RefreshTokens.AsQueryable()
+                .Where(t => t.UserName == userName && t.ClientId == clientId);
+
+            if (userAgent != null)
+            {
+                query = query.Where(t => t.UserAgent == userAgent);
+            }
+            if (maxExpiresUtc.HasValue)
+            {
+                query = query.Where(t => t.ExpiresUtc < maxExpiresUtc);
+            }
+
+            return query;
         }
 
         public List<RefreshToken> GetAllRefreshTokens()

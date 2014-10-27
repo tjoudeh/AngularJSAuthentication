@@ -1,4 +1,6 @@
-﻿using AngularJSAuthentication.API.Entities;
+﻿using System.Linq;
+using AngularJSAuthentication.API.Entities;
+using Microsoft.Owin;
 using Microsoft.Owin.Security.Infrastructure;
 using System;
 using System.Threading.Tasks;
@@ -28,12 +30,15 @@ namespace AngularJSAuthentication.API.Providers
                 var token = new RefreshToken 
                 { 
                     Id = Helper.GetHash(refreshTokenId),
-                    ClientId = clientid, 
+                    ClientId = clientid,
                     UserName = context.Ticket.Identity.Name,
+                    UserAgent = GetUserAgent(context.OwinContext),
                     ExpiresUtc = DateTime.UtcNow.AddMinutes(Convert.ToDouble(refreshTokenLifeTime)) 
                 };
-                
-                var result = await _repo.AddRefreshToken(token);
+
+                CleanupStaleTokens(_repo, token);
+
+                var result = _repo.AddRefreshToken(token);
 
                 if (result)
                 {
@@ -46,6 +51,11 @@ namespace AngularJSAuthentication.API.Providers
         private static string GetClientId(BaseContext context)
         {
             return context.OwinContext.Get<string>(Constants.Clients.ClientId);
+        }
+
+        private static string GetUserAgent(IOwinContext context)
+        {
+            return context.Request.Headers.Get("User-Agent").Substring(0, 50);
         }
 
         public async Task ReceiveAsync(AuthenticationTokenReceiveContext context)
@@ -86,9 +96,15 @@ namespace AngularJSAuthentication.API.Providers
                 // If you want to add any claims specificly for refresh tokens you can do that here
                 //ticket.Identity.AddClaim(new Claim("newClaim", "newClaimValue"));
                 context.SetTicket(ticket);
-
-                await _repo.RemoveRefreshToken(hashedTokenId);
             }
+        }
+
+
+        private static void CleanupStaleTokens(AuthRepository repo, RefreshToken token)
+        {
+            var previousTokens = repo.FindRefreshTokens(token.ClientId, token.UserName, token.UserAgent);
+            var staleTokens = repo.FindRefreshTokens(token.ClientId, token.UserName, null, DateTime.UtcNow);
+            repo.RemoveRefreshToken(previousTokens.Union(staleTokens).ToArray());
         }
 
         public void Create(AuthenticationTokenCreateContext context)
