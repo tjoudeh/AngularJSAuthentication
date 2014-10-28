@@ -55,6 +55,8 @@ namespace AngularJSAuthentication.API.Providers
                 context.SetError("invalid_clientId", "Client is inactive.");
                 return Task.FromResult<object>(null);
             }
+
+            context.OwinContext.Set(Constants.OAuth.ClientId, clientId);
             context.OwinContext.Set(Constants.OAuth.RefreshTokeLifeTime, client.RefreshTokenLifeTime.ToString());
 
             context.Validated();
