@@ -24,5 +24,10 @@ namespace AngularJSAuthentication.API
                 context.TryGetFormCredentials(out clientId, out clientSecret);
             }
         }
+
+        public static string GetUniqueId()
+        {
+            return Guid.NewGuid().ToString("n");
+        }
     }
 }

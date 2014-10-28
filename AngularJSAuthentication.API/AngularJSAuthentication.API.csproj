@@ -150,6 +150,10 @@
     <Compile Include="Migrations\201410271049298_Add_UserAgent_to_RefreshTokens.Designer.cs">
       <DependentUpon>201410271049298_Add_UserAgent_to_RefreshTokens.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201410281412441_Adding_UserAgentId_To_RefreshTokens.cs" />
+    <Compile Include="Migrations\201410281412441_Adding_UserAgentId_To_RefreshTokens.Designer.cs">
+      <DependentUpon>201410281412441_Adding_UserAgentId_To_RefreshTokens.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\ExternalLoginModels.cs" />
@@ -186,6 +190,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201410271049298_Add_UserAgent_to_RefreshTokens.resx">
       <DependentUpon>201410271049298_Add_UserAgent_to_RefreshTokens.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201410281412441_Adding_UserAgentId_To_RefreshTokens.resx">
+      <DependentUpon>201410281412441_Adding_UserAgentId_To_RefreshTokens.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

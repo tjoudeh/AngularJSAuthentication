@@ -21,30 +21,27 @@ namespace AngularJSAuthentication.API.Providers
                 return;
             }
 
-            var refreshTokenId = Guid.NewGuid().ToString("n");
+            var refreshTokenId = Helper.GetUniqueId();
+            var refreshTokenLifeTime = context.OwinContext.Get<string>(Constants.OAuth.RefreshTokeLifeTime);
+            var userAgentId = context.OwinContext.Get<string>(Constants.OAuth.UserAgentId);
+
+            var token = new RefreshToken
+            {
+                Id = Helper.GetHash(refreshTokenId),
+                ClientId = clientid,
+                UserName = context.Ticket.Identity.Name,
+                UserAgent = GetUserAgent(context.OwinContext),
+                ExpiresUtc = DateTime.UtcNow.AddMinutes(Convert.ToDouble(refreshTokenLifeTime)),
+                UserAgentId = userAgentId,
+            };
 
             using (var _repo = new AuthRepository())
             {
-                var refreshTokenLifeTime = context.OwinContext.Get<string>(Constants.OAuth.RefreshTokeLifeTime); 
-               
-                var token = new RefreshToken 
-                { 
-                    Id = Helper.GetHash(refreshTokenId),
-                    ClientId = clientid,
-                    UserName = context.Ticket.Identity.Name,
-                    UserAgent = GetUserAgent(context.OwinContext),
-                    ExpiresUtc = DateTime.UtcNow.AddMinutes(Convert.ToDouble(refreshTokenLifeTime)) 
-                };
-
-                CleanupStaleTokens(_repo, token);
-
-                var result = _repo.AddRefreshToken(token);
-
-                if (result)
+                CleanupRefreshTokens(_repo, token);
+                if (_repo.AddRefreshToken(token))
                 {
                     context.SetToken(refreshTokenId);
                 }
-             
             }
         }
 
@@ -85,6 +82,7 @@ namespace AngularJSAuthentication.API.Providers
                     // TODO: log suspicious activity
                     return;
                 }
+                context.OwinContext.Set(Constants.OAuth.UserAgentId, refreshToken.UserAgentId);
                 var ticket = AuthenticationTicketProvider.GetTicket(user, OAuthDefaults.AuthenticationType);
                 // workaround for date expiry check in OAuthAuthorizationServerHandler.InvokeTokenEndpointRefreshTokenGrantAsync()
                 // that will raise error if ticket.Properties.ExpiresUtc < currentUtc
@@ -97,11 +95,15 @@ namespace AngularJSAuthentication.API.Providers
         }
 
 
-        private static void CleanupStaleTokens(AuthRepository repo, RefreshToken token)
+        private static void CleanupRefreshTokens(AuthRepository repo, RefreshToken token)
         {
-            var previousTokens = repo.FindRefreshTokens(token.ClientId, token.UserName, token.UserAgent);
-            var staleTokens = repo.FindRefreshTokens(token.ClientId, token.UserName, null, DateTime.UtcNow);
-            repo.RemoveRefreshToken(previousTokens.Union(staleTokens).ToArray());
+            // deleting previous refrehs tokens for same user-agents
+            var previousTokens = repo.FindRefreshTokens(token.ClientId, token.UserName, token.UserAgentId).ToArray();
+            repo.RemoveRefreshToken(previousTokens);
+
+            // deliting expired tokens for the current user
+            var expiredTokens = repo.FindRefreshTokens(token.ClientId, token.UserName, null, DateTime.UtcNow).ToArray();
+            repo.RemoveRefreshToken(expiredTokens);
         }
 
 
