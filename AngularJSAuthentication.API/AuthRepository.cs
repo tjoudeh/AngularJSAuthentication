@@ -12,9 +12,9 @@ namespace AngularJSAuthentication.API
 
     public class AuthRepository : IDisposable
     {
-        private AuthContext _ctx;
+        private readonly AuthContext _ctx;
 
-        private UserManager<IdentityUser> _userManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
         public AuthRepository()
         {
@@ -24,7 +24,7 @@ namespace AngularJSAuthentication.API
 
         public async Task<IdentityResult> RegisterUser(UserModel userModel)
         {
-            IdentityUser user = new IdentityUser
+            var user = new IdentityUser
             {
                 UserName = userModel.UserName
             };
@@ -36,7 +36,7 @@ namespace AngularJSAuthentication.API
 
         public async Task<IdentityUser> FindUser(string userName, string password)
         {
-            IdentityUser user = await _userManager.FindAsync(userName, password);
+            var user = await _userManager.FindAsync(userName, password);
 
             return user;
         }
@@ -51,6 +51,12 @@ namespace AngularJSAuthentication.API
             var client = _ctx.Clients.Find(clientId);
 
             return client;
+        }
+        public IQueryable<Client> GetAllClients(ApplicationTypes apptype, bool isActive = true)
+        {
+            var clients = _ctx.Clients.Where(t => t.ApplicationType == apptype && t.Active == isActive);
+
+            return clients;
         }
 
         public bool AddRefreshToken(RefreshToken token)

@@ -9,15 +9,13 @@ namespace AngularJSAuthentication.API.Providers
     {
         public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
-
-            string clientId, clientSecret;
-            Client client;
-
-            if (!context.TryGetBasicCredentials(out clientId, out clientSecret))
+            if (!context.OwinContext.Get<bool>(Constants.OAuth.IsOriginAllowed))
             {
-                context.TryGetFormCredentials(out clientId, out clientSecret);
+                context.SetError("invalid_clientId", "Unrecognized client");
+                return Task.FromResult<object>(null);
             }
-
+            string clientId, clientSecret;
+            context.GetClientCredentials(out clientId, out clientSecret);
             if (clientId == null)
             {
                 //Remove the comments from the below line context.SetError, and invalidate context 
@@ -26,7 +24,7 @@ namespace AngularJSAuthentication.API.Providers
                 //context.SetError("invalid_clientId", "ClientId should be sent.");
                 return Task.FromResult<object>(null);
             }
-
+            Client client;
             using (var _repo = new AuthRepository())
             {
                 client = _repo.FindClient(context.ClientId);
@@ -57,10 +55,7 @@ namespace AngularJSAuthentication.API.Providers
                 context.SetError("invalid_clientId", "Client is inactive.");
                 return Task.FromResult<object>(null);
             }
-
-            context.OwinContext.Set(Constants.Clients.ClientId, clientId);
-            context.OwinContext.Set(Constants.Clients.AllowedOrigin, client.AllowedOrigin);
-            context.OwinContext.Set(Constants.Clients.RefreshTokeLifetimeKey, client.RefreshTokenLifeTime.ToString());
+            context.OwinContext.Set(Constants.OAuth.RefreshTokeLifeTime, client.RefreshTokenLifeTime.ToString());
 
             context.Validated();
             return Task.FromResult<object>(null);
@@ -68,10 +63,6 @@ namespace AngularJSAuthentication.API.Providers
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-
-            var allowedOrigin = context.OwinContext.Get<string>(Constants.Clients.AllowedOrigin) ?? "*";
-
-            context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
             IdentityUser user;
             using (var _repo = new AuthRepository())
             {

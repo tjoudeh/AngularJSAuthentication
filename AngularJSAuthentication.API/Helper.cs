@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Web;
+using Microsoft.Owin.Security.OAuth;
 
 namespace AngularJSAuthentication.API
 {
-    public class Helper
+    public static class Helper
     {
         public static string GetHash(string input)
         {
@@ -17,6 +15,14 @@ namespace AngularJSAuthentication.API
             byte[] byteHash = hashAlgorithm.ComputeHash(byteValue);
 
             return Convert.ToBase64String(byteHash);
+        }
+
+        public static void GetClientCredentials(this OAuthValidateClientAuthenticationContext context, out string clientId, out string clientSecret)
+        {
+            if (!context.TryGetBasicCredentials(out clientId, out clientSecret))
+            {
+                context.TryGetFormCredentials(out clientId, out clientSecret);
+            }
         }
     }
 }

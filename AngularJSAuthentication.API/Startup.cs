@@ -1,14 +1,12 @@
 ﻿using AngularJSAuthentication.API.Providers;
 using Microsoft.Owin;
+using Microsoft.Owin.Cors;
 using Microsoft.Owin.Security.Facebook;
 using Microsoft.Owin.Security.Google;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Web;
 using System.Web.Http;
 
 [assembly: OwinStartup(typeof(AngularJSAuthentication.API.Startup))]
@@ -23,12 +21,10 @@ namespace AngularJSAuthentication.API
 
         public void Configuration(IAppBuilder app)
         {
-            HttpConfiguration config = new HttpConfiguration();
-
+            var config = new HttpConfiguration();
+            app.UseCors(new CorsOptions { PolicyProvider = new IdentityCorsPolicyProvider() });
             ConfigureOAuth(app);
-
             WebApiConfig.Register(config);
-            app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             app.UseWebApi(config);
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<AuthContext, AngularJSAuthentication.API.Migrations.Configuration>());
 

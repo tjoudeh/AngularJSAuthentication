@@ -2,11 +2,11 @@
 {
     public static class Constants
     {
-        public static class Clients
+        public static class OAuth
         {
-            public const string RefreshTokeLifetimeKey = "as:clientRefreshTokenLifeTime";
-            public const string AllowedOrigin = "as:clientAllowedOrigin";
-            public const string ClientId = "as:client_id";
+            public const string RefreshTokeLifeTime = "AngularJSAuthentication.API.OAuth.RefreshTokeLifetime";
+            public const string ClientId = "AngularJSAuthentication.API.OAuth.ClientId";
+            public const string IsOriginAllowed = "ngularJSAuthentication.API.OAuth.IsOriginAllowed";
         }
     }
 }

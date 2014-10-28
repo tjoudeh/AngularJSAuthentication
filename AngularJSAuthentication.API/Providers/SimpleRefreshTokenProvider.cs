@@ -25,7 +25,7 @@ namespace AngularJSAuthentication.API.Providers
 
             using (var _repo = new AuthRepository())
             {
-                var refreshTokenLifeTime = context.OwinContext.Get<string>(Constants.Clients.RefreshTokeLifetimeKey); 
+                var refreshTokenLifeTime = context.OwinContext.Get<string>(Constants.OAuth.RefreshTokeLifeTime); 
                
                 var token = new RefreshToken 
                 { 
@@ -50,7 +50,7 @@ namespace AngularJSAuthentication.API.Providers
 
         private static string GetClientId(BaseContext context)
         {
-            return context.OwinContext.Get<string>(Constants.Clients.ClientId);
+            return context.OwinContext.Get<string>(Constants.OAuth.ClientId);
         }
 
         private static string GetUserAgent(IOwinContext context)
@@ -60,9 +60,6 @@ namespace AngularJSAuthentication.API.Providers
 
         public void Receive(AuthenticationTokenReceiveContext context)
         {
-            var allowedOrigin = context.OwinContext.Get<string>(Constants.Clients.AllowedOrigin);
-            context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
-
             var hashedTokenId = Helper.GetHash(context.Token);
 
             using (var _repo = new AuthRepository())
