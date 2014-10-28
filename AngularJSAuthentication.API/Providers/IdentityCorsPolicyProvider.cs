@@ -18,8 +18,14 @@ namespace AngularJSAuthentication.API.Providers
         public override async Task<CorsPolicy> GetCorsPolicyAsync(IOwinRequest request)
         {
             var policy = new CorsPolicy();
-            var allowedOrigins = new string[] { };
             var corsContext = GetCorsRequestContext(request.Context);
+            if (corsContext == null)
+            {
+                return await Task.FromResult(policy);
+            }
+
+            var allowedOrigins = new string[] { };
+
             if (corsContext.IsPreflight)
             {
                 // For OPTIONS request (which will not have client_id) we'll get all allowed origins
