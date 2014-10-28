@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace AngularJSAuthentication.API.Entities
 {
@@ -10,15 +7,24 @@ namespace AngularJSAuthentication.API.Entities
     {
         [Key]
         public string Id { get; set; }
+
         [Required]
         [MaxLength(50)]
-        public string Subject { get; set; }
+        public string UserName { get; set; }
+
         [Required]
         [MaxLength(50)]
         public string ClientId { get; set; }
-        public DateTime IssuedUtc { get; set; }
-        public DateTime ExpiresUtc { get; set; }
+
         [Required]
-        public string ProtectedTicket { get; set; }
+        [MaxLength(50)]
+        public string UserAgent { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        public string UserAgentId { get; set; }
+
+        [Required]
+        public DateTime ExpiresUtc { get; set; }
     }
 }

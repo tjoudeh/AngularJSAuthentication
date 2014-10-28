@@ -19,6 +19,8 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -129,6 +131,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="AuthContext.cs" />
     <Compile Include="AuthRepository.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\RefreshTokensController.cs" />
@@ -139,13 +142,27 @@
     <Compile Include="Migrations\201407121205456_AddClientsAndRefreshTokenTables.Designer.cs">
       <DependentUpon>201407121205456_AddClientsAndRefreshTokenTables.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201410270946093_Update_RefreshTokens_Schema.cs" />
+    <Compile Include="Migrations\201410270946093_Update_RefreshTokens_Schema.Designer.cs">
+      <DependentUpon>201410270946093_Update_RefreshTokens_Schema.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201410271049298_Add_UserAgent_to_RefreshTokens.cs" />
+    <Compile Include="Migrations\201410271049298_Add_UserAgent_to_RefreshTokens.Designer.cs">
+      <DependentUpon>201410271049298_Add_UserAgent_to_RefreshTokens.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201410281412441_Adding_UserAgentId_To_RefreshTokens.cs" />
+    <Compile Include="Migrations\201410281412441_Adding_UserAgentId_To_RefreshTokens.Designer.cs">
+      <DependentUpon>201410281412441_Adding_UserAgentId_To_RefreshTokens.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\ExternalLoginModels.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\AuthenticationTicketProvider.cs" />
     <Compile Include="Providers\FacebookAuthProvider.cs" />
     <Compile Include="Providers\GoogleAuthProvider.cs" />
+    <Compile Include="Providers\IdentityCorsPolicyProvider.cs" />
     <Compile Include="Providers\SimpleAuthorizationServerProvider.cs" />
     <Compile Include="Providers\SimpleRefreshTokenProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -167,6 +184,15 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201407121205456_AddClientsAndRefreshTokenTables.resx">
       <DependentUpon>201407121205456_AddClientsAndRefreshTokenTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201410270946093_Update_RefreshTokens_Schema.resx">
+      <DependentUpon>201410270946093_Update_RefreshTokens_Schema.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201410271049298_Add_UserAgent_to_RefreshTokens.resx">
+      <DependentUpon>201410271049298_Add_UserAgent_to_RefreshTokens.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201410281412441_Adding_UserAgentId_To_RefreshTokens.resx">
+      <DependentUpon>201410281412441_Adding_UserAgentId_To_RefreshTokens.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
@@ -194,6 +220,13 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

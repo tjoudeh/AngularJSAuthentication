@@ -2,22 +2,19 @@
 using AngularJSAuthentication.API.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace AngularJSAuthentication.API
 {
 
     public class AuthRepository : IDisposable
     {
-        private AuthContext _ctx;
+        private readonly AuthContext _ctx;
 
-        private UserManager<IdentityUser> _userManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
         public AuthRepository()
         {
@@ -27,7 +24,7 @@ namespace AngularJSAuthentication.API
 
         public async Task<IdentityResult> RegisterUser(UserModel userModel)
         {
-            IdentityUser user = new IdentityUser
+            var user = new IdentityUser
             {
                 UserName = userModel.UserName
             };
@@ -39,9 +36,14 @@ namespace AngularJSAuthentication.API
 
         public async Task<IdentityUser> FindUser(string userName, string password)
         {
-            IdentityUser user = await _userManager.FindAsync(userName, password);
+            var user = await _userManager.FindAsync(userName, password);
 
             return user;
+        }
+
+        public IdentityUser FindUserByName(string userName)
+        {
+            return _userManager.FindByName(userName);
         }
 
         public Client FindClient(string clientId)
@@ -50,20 +52,17 @@ namespace AngularJSAuthentication.API
 
             return client;
         }
-
-        public async Task<bool> AddRefreshToken(RefreshToken token)
+        public IQueryable<Client> GetAllClients(ApplicationTypes apptype, bool isActive = true)
         {
+            var clients = _ctx.Clients.Where(t => t.ApplicationType == apptype && t.Active == isActive);
 
-           var existingToken = _ctx.RefreshTokens.Where(r => r.Subject == token.Subject && r.ClientId == token.ClientId).SingleOrDefault();
+            return clients;
+        }
 
-           if (existingToken != null)
-           {
-             var result = await RemoveRefreshToken(existingToken);
-           }
-          
+        public bool AddRefreshToken(RefreshToken token)
+        {
             _ctx.RefreshTokens.Add(token);
-
-            return await _ctx.SaveChangesAsync() > 0;
+            return _ctx.SaveChanges() > 0;
         }
 
         public async Task<bool> RemoveRefreshToken(string refreshTokenId)
@@ -71,24 +70,45 @@ namespace AngularJSAuthentication.API
            var refreshToken = await _ctx.RefreshTokens.FindAsync(refreshTokenId);
 
            if (refreshToken != null) {
-               _ctx.RefreshTokens.Remove(refreshToken);
-               return await _ctx.SaveChangesAsync() > 0;
+               return RemoveRefreshToken(refreshToken);
            }
 
            return false;
         }
 
-        public async Task<bool> RemoveRefreshToken(RefreshToken refreshToken)
+        public bool RemoveRefreshToken(params RefreshToken[] refreshTokens)
         {
-            _ctx.RefreshTokens.Remove(refreshToken);
-             return await _ctx.SaveChangesAsync() > 0;
+            foreach (var refreshToken in refreshTokens)
+            {
+                _ctx.RefreshTokens.Remove(refreshToken);
+            }
+             return _ctx.SaveChanges() > 0;
         }
 
-        public async Task<RefreshToken> FindRefreshToken(string refreshTokenId)
+        public RefreshToken FindRefreshToken(string refreshTokenId)
         {
-            var refreshToken = await _ctx.RefreshTokens.FindAsync(refreshTokenId);
+            var refreshToken = _ctx.RefreshTokens.Find(refreshTokenId);
 
             return refreshToken;
+        }
+
+        public IQueryable<RefreshToken> FindRefreshTokens(string clientId, string userName,
+            string userAgentId,
+            DateTime? maxExpiresUtc = null)
+        {
+            var query = _ctx.RefreshTokens.AsQueryable()
+                .Where(t => t.UserName == userName && t.ClientId == clientId);
+
+            if (userAgentId != null)
+            {
+                query = query.Where(t => t.UserAgentId == userAgentId);
+            }
+            if (maxExpiresUtc.HasValue)
+            {
+                query = query.Where(t => t.ExpiresUtc < maxExpiresUtc);
+            }
+
+            return query;
         }
 
         public List<RefreshToken> GetAllRefreshTokens()
