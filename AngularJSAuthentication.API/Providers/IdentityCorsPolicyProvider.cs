@@ -17,6 +17,10 @@ namespace AngularJSAuthentication.API.Providers
 
         public override async Task<CorsPolicy> GetCorsPolicyAsync(IOwinRequest request)
         {
+            if (request.Path.Value != "/token")
+            {
+                return await Task.FromResult(new CorsPolicy{AllowAnyHeader = true, AllowAnyMethod = true, AllowAnyOrigin = true});
+            }
             var policy = new CorsPolicy();
             var corsContext = GetCorsRequestContext(request.Context);
             if (corsContext == null)
