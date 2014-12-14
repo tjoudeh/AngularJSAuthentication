@@ -1,9 +1,7 @@
 namespace AngularJSAuthentication.API.Migrations
 {
     using AngularJSAuthentication.API.Entities;
-    using System;
     using System.Collections.Generic;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
@@ -37,7 +35,8 @@ namespace AngularJSAuthentication.API.Migrations
                     ApplicationType =  Models.ApplicationTypes.JavaScript, 
                     Active = true, 
                     RefreshTokenLifeTime = 7200, 
-                    AllowedOrigin = "http://ngauthenticationweb.azurewebsites.net"
+                    //Change this to real URL
+                    AllowedOrigin = "https://localhost:44301"
                 },
                 new Client
                 { Id = "consoleApp", 
