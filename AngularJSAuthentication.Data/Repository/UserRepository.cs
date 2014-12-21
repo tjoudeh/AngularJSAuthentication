@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AngularJSAuthentication.Data.Entities;
 using AngularJSAuthentication.Data.Infrastructure;
 using AngularJSAuthentication.Data.Interface;
 using Microsoft.AspNet.Identity;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using MongoDB.Driver.Builders;
 
 namespace AngularJSAuthentication.Data.Repository
 {
@@ -13,114 +17,229 @@ namespace AngularJSAuthentication.Data.Repository
        IUserPasswordStore<TUser>, IUserSecurityStampStore<TUser>, IUserStore<TUser>, IUserRepository<TUser>
        where TUser : User
     {
+
+        private bool _disposed;
+
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _disposed = true;
         }
 
         public Task CreateAsync(TUser user)
         {
-            throw new NotImplementedException();
+            ThrowIfDisposed();
+            if (user == null)
+                throw new ArgumentNullException("user");
+
+            collection.Insert(user);
+            return Task.FromResult(user);
         }
 
         public Task UpdateAsync(TUser user)
         {
-            throw new NotImplementedException();
+            ThrowIfDisposed();
+            if (user == null)
+                throw new ArgumentNullException("user");
+
+            var bsonId = ObjectId.Parse(user.Id);
+            collection.Update(Query.EQ("_id", bsonId), MongoDB.Driver.Builders.Update.Replace(user), UpdateFlags.Upsert);
+            return Task.FromResult(user);
         }
 
         public Task DeleteAsync(TUser user)
         {
-            throw new NotImplementedException();
+            ThrowIfDisposed();
+            if (user == null)
+                throw new ArgumentNullException("user");
+
+            collection.Remove((Query.EQ("_id", ObjectId.Parse(user.Id))));
+            return Task.FromResult(true);
         }
 
         public Task<TUser> FindByIdAsync(string userId)
         {
-            throw new NotImplementedException();
+            ThrowIfDisposed();
+            var bsonId = ObjectId.Parse(userId);
+            TUser user = collection.FindOneByIdAs<TUser>(bsonId);
+            return Task.FromResult(user);
         }
 
         public Task<TUser> FindByNameAsync(string userName)
         {
-            throw new NotImplementedException();
+            ThrowIfDisposed();
+
+            TUser user = collection.FindOneAs<TUser>((Query.EQ("userName", userName)));
+            return Task.FromResult(user);
         }
 
         public Task AddLoginAsync(TUser user, UserLoginInfo login)
         {
-            throw new NotImplementedException();
+            ThrowIfDisposed();
+            if (user == null)
+                throw new ArgumentNullException("user");
+
+            if (!user.Logins.Any(x => x.LoginProvider == login.LoginProvider && x.ProviderKey == login.ProviderKey))
+            {
+                user.Logins.Add(login);
+            }
+
+            return Task.FromResult(true);
         }
 
         public Task RemoveLoginAsync(TUser user, UserLoginInfo login)
         {
-            throw new NotImplementedException();
+            ThrowIfDisposed();
+            if (user == null)
+                throw new ArgumentNullException("user");
+
+            user.Logins.RemoveAll(x => x.LoginProvider == login.LoginProvider && x.ProviderKey == login.ProviderKey);
+
+            return Task.FromResult(0);
         }
 
         public Task<IList<UserLoginInfo>> GetLoginsAsync(TUser user)
         {
-            throw new NotImplementedException();
+            ThrowIfDisposed();
+            if (user == null)
+                throw new ArgumentNullException("user");
+            IList<UserLoginInfo> logins = user.Logins.ToList();
+            return Task.FromResult(logins);
         }
 
         public Task<TUser> FindAsync(UserLoginInfo login)
         {
-            throw new NotImplementedException();
+            TUser user = null;
+            user = collection.FindOneAs<TUser>(Query.And(Query.EQ("logins.LoginProvider", login.LoginProvider),
+                        Query.EQ("logins.ProviderKey", login.ProviderKey)));
+
+            return Task.FromResult(user);
         }
 
         public Task<IList<Claim>> GetClaimsAsync(TUser user)
         {
-            throw new NotImplementedException();
+            ThrowIfDisposed();
+            if (user == null)
+                throw new ArgumentNullException("user");
+
+            IList<Claim> result = user.Claims.Select(c => new Claim(AngularJSAuthentication.Data.Models.Constants.ClaimTypeScope, c)).ToList();
+            return Task.FromResult(result);
         }
 
         public Task AddClaimAsync(TUser user, Claim claim)
         {
-            throw new NotImplementedException();
+            ThrowIfDisposed();
+            if (user == null)
+                throw new ArgumentNullException("user");
+
+            if (!user.Claims.Any(x => x.Equals(claim.Value, StringComparison.OrdinalIgnoreCase)))
+            {
+                user.Claims.Add(claim.Value);
+            }
+
+            return Task.FromResult(0);
         }
 
         public Task RemoveClaimAsync(TUser user, Claim claim)
         {
-            throw new NotImplementedException();
+            ThrowIfDisposed();
+            if (user == null)
+                throw new ArgumentNullException("user");
+
+            user.Claims.RemoveAll(x => x.Equals(claim.Value, StringComparison.OrdinalIgnoreCase));
+            return Task.FromResult(0);
         }
 
-        public Task AddToRoleAsync(TUser user, string roleName)
+        public Task AddToRoleAsync(TUser user, string role)
         {
-            throw new NotImplementedException();
+            ThrowIfDisposed();
+            if (user == null)
+                throw new ArgumentNullException("user");
+
+            if (!user.Roles.Contains(role, StringComparer.InvariantCultureIgnoreCase))
+                user.Roles.Add(role);
+
+            return Task.FromResult(true);
         }
 
-        public Task RemoveFromRoleAsync(TUser user, string roleName)
+        public Task RemoveFromRoleAsync(TUser user, string role)
         {
-            throw new NotImplementedException();
+            ThrowIfDisposed();
+            if (user == null)
+                throw new ArgumentNullException("user");
+
+            user.Roles.RemoveAll(r => String.Equals(r, role, StringComparison.InvariantCultureIgnoreCase));
+            return Task.FromResult(0);
         }
 
         public Task<IList<string>> GetRolesAsync(TUser user)
         {
-            throw new NotImplementedException();
+            ThrowIfDisposed();
+            if (user == null)
+                throw new ArgumentNullException("user");
+
+            return Task.FromResult<IList<string>>(user.Roles);
         }
 
-        public Task<bool> IsInRoleAsync(TUser user, string roleName)
+        public Task<bool> IsInRoleAsync(TUser user, string role)
         {
-            throw new NotImplementedException();
+            ThrowIfDisposed();
+            if (user == null)
+                throw new ArgumentNullException("user");
+
+            return Task.FromResult(user.Roles.Contains(role, StringComparer.InvariantCultureIgnoreCase));
         }
 
         public Task SetPasswordHashAsync(TUser user, string passwordHash)
         {
-            throw new NotImplementedException();
+            ThrowIfDisposed();
+            if (user == null)
+                throw new ArgumentNullException("user");
+
+            user.PasswordHash = passwordHash;
+            return Task.FromResult(0);
         }
 
         public Task<string> GetPasswordHashAsync(TUser user)
         {
-            throw new NotImplementedException();
+            ThrowIfDisposed();
+            if (user == null)
+                throw new ArgumentNullException("user");
+
+            return Task.FromResult(user.PasswordHash);
         }
 
         public Task<bool> HasPasswordAsync(TUser user)
         {
-            throw new NotImplementedException();
+            ThrowIfDisposed();
+            if (user == null)
+                throw new ArgumentNullException("user");
+
+            return Task.FromResult(user.PasswordHash != null);
         }
 
-        public Task SetSecurityStampAsync(TUser user, string stamp)
+        public Task SetSecurityStampAsync(TUser user, string passwordHash)
         {
-            throw new NotImplementedException();
+            ThrowIfDisposed();
+            if (user == null)
+                throw new ArgumentNullException("user");
+
+            user.PasswordHash = passwordHash;
+            return Task.FromResult(0);
         }
 
         public Task<string> GetSecurityStampAsync(TUser user)
         {
-            throw new NotImplementedException();
+            ThrowIfDisposed();
+            if (user == null)
+                throw new ArgumentNullException("user");
+
+            return Task.FromResult(user.SecurityStamp);
+        }
+
+        private void ThrowIfDisposed()
+        {
+            if (_disposed)
+                throw new ObjectDisposedException(GetType().Name);
         }
     }
 }

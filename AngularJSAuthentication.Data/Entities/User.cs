@@ -35,15 +35,12 @@ namespace AngularJSAuthentication.Data.Entities
 		public virtual List<string> Claims { get; private set; }
        
 
-        
-        
-        
-        /// <summary>
-        /// Gets the logins.
-        /// </summary>
-        /// <value>The logins.</value>
-        //[BsonElement("logins")]
-        //public virtual List<UserLoginInfo> Logins { get; private set; }
+        [BsonElement("logins")]
+        public virtual List<UserLoginInfo> Logins { get; private set; }
+
+
+
+
 
         /// <summary>
         /// Gets the subsriptions.

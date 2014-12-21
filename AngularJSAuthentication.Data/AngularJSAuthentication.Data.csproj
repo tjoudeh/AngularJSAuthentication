@@ -63,6 +63,7 @@
     <Compile Include="Interface\IClientRepository.cs" />
     <Compile Include="Interface\IRefreshTokenRepository.cs" />
     <Compile Include="Interface\IUserRepository.cs" />
+    <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Repository\ClientRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
