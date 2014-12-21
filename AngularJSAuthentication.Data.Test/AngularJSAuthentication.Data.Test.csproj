@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="Repository\ClientRepositoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\RefreshTokenRepositoryTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AngularJSAuthentication.Common\AngularJSAuthentication.Common.csproj">

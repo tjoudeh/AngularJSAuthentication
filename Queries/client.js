@@ -1,4 +1,4 @@
 
-db.client.find()
+db.clients.find()
 
 

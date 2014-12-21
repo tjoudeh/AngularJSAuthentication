@@ -35,7 +35,12 @@ namespace AngularJSAuthentication.Data.Repository
 
         public Task<bool> AddRefreshToken(RefreshToken token)
         {
-            throw new System.NotImplementedException();
+            ThrowIfDisposed();
+            if (token == null)
+                throw new ArgumentNullException("token");
+
+            collection.Insert(token);
+            return Task.FromResult(true);
         }
 
         public Task<bool> RemoveRefreshToken(string refreshTokenId)
