@@ -1,5 +1,5 @@
-﻿using AngularJSAuthentication.API.Entities;
-using AngularJSAuthentication.API.Models;
+﻿using AngularJSAuthentication.API.Models;
+using AngularJSAuthentication.Data.Entities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;

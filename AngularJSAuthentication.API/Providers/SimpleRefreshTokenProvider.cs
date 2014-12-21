@@ -1,4 +1,4 @@
-﻿using AngularJSAuthentication.API.Entities;
+﻿using AngularJSAuthentication.Data.Entities;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Infrastructure;
 using System;

@@ -1,6 +1,8 @@
+using AngularJSAuthentication.Data.Entities;
+using AngularJSAuthentication.Data.Models;
+
 namespace AngularJSAuthentication.API.Migrations
 {
-    using AngularJSAuthentication.API.Entities;
     using System;
     using System.Collections.Generic;
     using System.Data.Entity;
@@ -34,7 +36,7 @@ namespace AngularJSAuthentication.API.Migrations
                 { Id = "ngAuthApp", 
                     Secret= Helper.GetHash("abc@123"), 
                     Name="AngularJS front-end Application", 
-                    ApplicationType =  Models.ApplicationTypes.JavaScript, 
+                    ApplicationType =  ApplicationTypes.JavaScript, 
                     Active = true, 
                     RefreshTokenLifeTime = 7200, 
                     AllowedOrigin = "http://ngauthenticationweb.azurewebsites.net"
@@ -43,7 +45,7 @@ namespace AngularJSAuthentication.API.Migrations
                 { Id = "consoleApp", 
                     Secret=Helper.GetHash("123@abc"), 
                     Name="Console Application", 
-                    ApplicationType =Models.ApplicationTypes.NativeConfidential, 
+                    ApplicationType =ApplicationTypes.NativeConfidential, 
                     Active = true, 
                     RefreshTokenLifeTime = 14400, 
                     AllowedOrigin = "*"
