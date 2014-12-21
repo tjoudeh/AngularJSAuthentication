@@ -38,6 +38,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -46,8 +47,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\CollectionName .cs" />
+    <Compile Include="Attributes\Opertation.cs" />
     <Compile Include="Entities\Client.cs" />
     <Compile Include="Entities\RefreshToken.cs" />
+    <Compile Include="Helpers\Util.cs" />
+    <Compile Include="Infrastructure\Entity.cs" />
+    <Compile Include="Infrastructure\IEntity.cs" />
+    <Compile Include="Infrastructure\IMongoRepository.cs" />
+    <Compile Include="Infrastructure\MongoRepository.cs" />
+    <Compile Include="Interface\IClientRepoistory.cs" />
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Repository\ClientRepoistory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

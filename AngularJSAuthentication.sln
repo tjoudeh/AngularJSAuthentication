@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngularJSAuthentication.Dat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngularJSAuthentication.Data.Test", "AngularJSAuthentication.Data.Test\AngularJSAuthentication.Data.Test.csproj", "{35BC61BD-3288-4A0A-8A9A-79BE68A46864}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngularJSAuthentication.Common", "AngularJSAuthentication.Common\AngularJSAuthentication.Common.csproj", "{D034B7F2-A930-447D-A803-17D798600ED7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{35BC61BD-3288-4A0A-8A9A-79BE68A46864}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35BC61BD-3288-4A0A-8A9A-79BE68A46864}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35BC61BD-3288-4A0A-8A9A-79BE68A46864}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D034B7F2-A930-447D-A803-17D798600ED7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D034B7F2-A930-447D-A803-17D798600ED7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D034B7F2-A930-447D-A803-17D798600ED7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D034B7F2-A930-447D-A803-17D798600ED7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
