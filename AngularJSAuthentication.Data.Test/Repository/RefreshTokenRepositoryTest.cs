@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using AngularJSAuthentication.Common.DI;
-using AngularJSAuthentication.Common.Helpers;
 using AngularJSAuthentication.Data.Entities;
 using AngularJSAuthentication.Data.Interface;
-using AngularJSAuthentication.Data.Models;
 using AngularJSAuthentication.Data.Repository;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
