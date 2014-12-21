@@ -144,7 +144,6 @@
     <Compile Include="Models\ExternalLoginModels.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Providers\FacebookAuthProvider.cs" />
     <Compile Include="Providers\GoogleAuthProvider.cs" />
     <Compile Include="Providers\SimpleAuthorizationServerProvider.cs" />
     <Compile Include="Providers\SimpleRefreshTokenProvider.cs" />
