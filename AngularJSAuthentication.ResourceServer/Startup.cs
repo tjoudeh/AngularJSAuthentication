@@ -2,10 +2,6 @@
 using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Http;
 
 [assembly: OwinStartup(typeof(AngularJSAuthentication.ResourceServer.Startup))]
@@ -18,7 +14,7 @@ namespace AngularJSAuthentication.ResourceServer
 
         public void Configuration(IAppBuilder app)
         {
-            HttpConfiguration config = new HttpConfiguration();
+            var config = new HttpConfiguration();
 
             ConfigureOAuth(app);
 
