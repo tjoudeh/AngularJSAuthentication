@@ -28,10 +28,9 @@ namespace AngularJSAuthentication.API.Migrations
             context.SaveChanges();
         }
 
-        private static List<Client> BuildClientsList()
+        private static IEnumerable<Client> BuildClientsList()
         {
-
-            List<Client> ClientsList = new List<Client> 
+            var ClientsList = new List<Client> 
             {
                 new Client
                 { Id = "ngAuthApp", 

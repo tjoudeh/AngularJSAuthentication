@@ -15,6 +15,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngularJSAuthentication.Dat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngularJSAuthentication.Common", "AngularJSAuthentication.Common\AngularJSAuthentication.Common.csproj", "{D034B7F2-A930-447D-A803-17D798600ED7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Queries", "Queries", "{85BF744F-FB9F-4AC6-9225-B6FA9F5C69ED}"
+	ProjectSection(SolutionItems) = preProject
+		Queries\client.js = Queries\client.js
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

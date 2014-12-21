@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using AngularJSAuthentication.Data.Attributes;
 using AngularJSAuthentication.Data.Infrastructure;
 using AngularJSAuthentication.Data.Models;
 
 namespace AngularJSAuthentication.Data.Entities
 {
+    [CollectionName("clients")]
     public class Client : IEntity<string>
     {
         [Key] 

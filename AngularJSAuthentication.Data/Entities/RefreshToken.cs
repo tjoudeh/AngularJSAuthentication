@@ -1,9 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using AngularJSAuthentication.Data.Attributes;
+using AngularJSAuthentication.Data.Infrastructure;
 
 namespace AngularJSAuthentication.Data.Entities
 {
-    public class RefreshToken
+    [CollectionName("refreshTokens")]
+    public class RefreshToken : IEntity<string>
     {
         [Key]
         public string Id { get; set; }

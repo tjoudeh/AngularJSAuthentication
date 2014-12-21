@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using AngularJSAuthentication.Common.DI;
 using AngularJSAuthentication.Common.Helpers;
@@ -27,13 +28,24 @@ namespace AngularJSAuthentication.Data.Test.Repository
         }
 
         [Test]
-        public void Can_Create_Clients()
+        public void Can_Get_Client_By_Id()
         {
-                
-            
+            var client = clientRepoistory.FindClient("ngAuthApp").Result;
+            Console.WriteLine(client.Name);
         }
 
-        private static List<Client> BuildClientsList()
+        [Test]
+        public void Can_Create_Clients()
+        {
+            var clientList = BuildClientsList();
+            foreach (var client in clientList)
+            {
+                Console.WriteLine(client.Name);
+                clientRepoistory.SaveClient(client);
+            }
+        }
+
+        private static IEnumerable<Client> BuildClientsList()
         {
             var ClientsList = new List<Client> 
             {
