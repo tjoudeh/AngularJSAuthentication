@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AngularJSAuthentication.Data.Entities;
 using AngularJSAuthentication.Data.Infrastructure;
 using AngularJSAuthentication.Data.Interface;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
+using MongoDB.Driver.Builders;
 
 namespace AngularJSAuthentication.Data.Repository
 {
@@ -50,17 +53,27 @@ namespace AngularJSAuthentication.Data.Repository
 
         public Task<bool> RemoveRefreshToken(RefreshToken refreshToken)
         {
-            throw new System.NotImplementedException();
+            ThrowIfDisposed();
+            if (refreshToken == null)
+                throw new ArgumentNullException("refreshToken");
+
+            collection.Remove((Query.EQ("_id", ObjectId.Parse(refreshToken.Id))));
+            return Task.FromResult(true);
         }
 
         public Task<RefreshToken> FindRefreshToken(string refreshTokenId)
         {
-            throw new System.NotImplementedException();
+            ThrowIfDisposed();
+            var bsonId = ObjectId.Parse(refreshTokenId);
+
+            var refreshToken = collection.FindOneByIdAs<RefreshToken>(bsonId);
+            return Task.FromResult(refreshToken);
         }
 
         public List<RefreshToken> GetAllRefreshTokens()
         {
-            throw new System.NotImplementedException();
+            var refreshTokens = collection.FindAllAs<RefreshToken>().ToList();
+            return refreshTokens;
         }
 
         /// <summary>
