@@ -1,0 +1,16 @@
+
+How to: Set Multiple Startup Projects
+http://msdn.microsoft.com/en-us/library/ms165413.aspx
+
+1.In Solution Explorer, select the solution.
+
+2.On the Project menu, click Properties. The Solution Property Pages dialog box opens.
+
+3. Expand the Common Properties node, and click Startup Project.
+
+4. Click Multiple Startup Projects and set the project actions. For more information
+
+- AngularJSAuthentication.API
+- AngularJSAuthentication.ResourceServer
+- AngularJSAuthentication.Web
+
