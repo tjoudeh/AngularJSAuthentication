@@ -1,4 +1,5 @@
-﻿using AngularJSAuthentication.Data.Entities;
+﻿using AngularJSAuthentication.Common.Helpers;
+using AngularJSAuthentication.Data.Entities;
 using AngularJSAuthentication.Data.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
@@ -55,7 +56,7 @@ namespace AngularJSAuthentication.API.Providers
                 }
                 else
                 {
-                    if (client.Secret != Helper.GetHash(clientSecret))
+                    if (client.Secret != CryptographyHelper.GetHash(clientSecret))
                     {
                         context.SetError("invalid_clientId", "Client secret is invalid.");
                         return Task.FromResult<object>(null);

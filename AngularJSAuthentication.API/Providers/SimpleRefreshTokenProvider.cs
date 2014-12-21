@@ -1,12 +1,8 @@
-﻿using AngularJSAuthentication.Data.Entities;
-using Microsoft.Owin.Security;
+﻿using AngularJSAuthentication.Common.Helpers;
+using AngularJSAuthentication.Data.Entities;
 using Microsoft.Owin.Security.Infrastructure;
 using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace AngularJSAuthentication.API.Providers
 {
@@ -29,8 +25,8 @@ namespace AngularJSAuthentication.API.Providers
                 var refreshTokenLifeTime = context.OwinContext.Get<string>("as:clientRefreshTokenLifeTime"); 
                
                 var token = new RefreshToken() 
-                { 
-                    Id = Helper.GetHash(refreshTokenId),
+                {
+                    Id = CryptographyHelper.GetHash(refreshTokenId),
                     ClientId = clientid, 
                     Subject = context.Ticket.Identity.Name,
                     IssuedUtc = DateTime.UtcNow,
@@ -58,7 +54,7 @@ namespace AngularJSAuthentication.API.Providers
             var allowedOrigin = context.OwinContext.Get<string>("as:clientAllowedOrigin");
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
-            string hashedTokenId = Helper.GetHash(context.Token);
+            string hashedTokenId = CryptographyHelper.GetHash(context.Token);
 
             using (AuthRepository _repo = new AuthRepository())
             {

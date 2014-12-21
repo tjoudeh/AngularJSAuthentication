@@ -56,9 +56,9 @@
     <Compile Include="Infrastructure\IEntity.cs" />
     <Compile Include="Infrastructure\IMongoRepository.cs" />
     <Compile Include="Infrastructure\MongoRepository.cs" />
-    <Compile Include="Interface\IClientRepoistory.cs" />
+    <Compile Include="Interface\IClientRepository.cs" />
     <Compile Include="Models\Enums.cs" />
-    <Compile Include="Repository\ClientRepoistory.cs" />
+    <Compile Include="Repository\ClientRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

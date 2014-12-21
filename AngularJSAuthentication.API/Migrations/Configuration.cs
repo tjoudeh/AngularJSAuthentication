@@ -1,3 +1,4 @@
+using AngularJSAuthentication.Common.Helpers;
 using AngularJSAuthentication.Data.Entities;
 using AngularJSAuthentication.Data.Models;
 
@@ -34,7 +35,7 @@ namespace AngularJSAuthentication.API.Migrations
             {
                 new Client
                 { Id = "ngAuthApp", 
-                    Secret= Helper.GetHash("abc@123"), 
+                    Secret= CryptographyHelper.GetHash("abc@123"), 
                     Name="AngularJS front-end Application", 
                     ApplicationType =  ApplicationTypes.JavaScript, 
                     Active = true, 
@@ -43,7 +44,7 @@ namespace AngularJSAuthentication.API.Migrations
                 },
                 new Client
                 { Id = "consoleApp", 
-                    Secret=Helper.GetHash("123@abc"), 
+                    Secret= CryptographyHelper.GetHash("123@abc"), 
                     Name="Console Application", 
                     ApplicationType =ApplicationTypes.NativeConfidential, 
                     Active = true, 

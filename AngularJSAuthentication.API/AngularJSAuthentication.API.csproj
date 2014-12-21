@@ -132,7 +132,6 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\RefreshTokensController.cs" />
-    <Compile Include="Helper.cs" />
     <Compile Include="Migrations\201407121205456_AddClientsAndRefreshTokenTables.cs" />
     <Compile Include="Migrations\201407121205456_AddClientsAndRefreshTokenTables.Designer.cs">
       <DependentUpon>201407121205456_AddClientsAndRefreshTokenTables.cs</DependentUpon>
@@ -166,6 +165,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AngularJSAuthentication.Common\AngularJSAuthentication.Common.csproj">
+      <Project>{d034b7f2-a930-447d-a803-17d798600ed7}</Project>
+      <Name>AngularJSAuthentication.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AngularJSAuthentication.Data\AngularJSAuthentication.Data.csproj">
       <Project>{9d912007-3c1b-4ea6-9b34-6fadd48b5ba2}</Project>
       <Name>AngularJSAuthentication.Data</Name>
