@@ -23,6 +23,12 @@ app.config(function ($routeProvider) {
         templateUrl: "/app/views/orders.html"
     });
 
+
+    $routeProvider.when("/subscriptions", {
+        controller: "subscriptionsController",
+        templateUrl: "/app/views/subscriptions.html"
+    });
+
     $routeProvider.when("/refresh", {
         controller: "refreshController",
         templateUrl: "/app/views/refresh.html"
