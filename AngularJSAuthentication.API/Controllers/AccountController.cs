@@ -7,13 +7,10 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
 
 namespace AngularJSAuthentication.API.Controllers
@@ -32,6 +29,7 @@ namespace AngularJSAuthentication.API.Controllers
         {
             _repo = new AuthRepository();
         }
+
 
         // POST api/Account/Register
         [AllowAnonymous]
@@ -237,7 +235,6 @@ namespace AngularJSAuthentication.API.Controllers
 
         private string ValidateClientAndRedirectUri(HttpRequestMessage request, ref string redirectUriOutput)
         {
-
             Uri redirectUri;
 
             var redirectUriString = GetQueryString(Request, "redirect_uri");

@@ -19,7 +19,7 @@ namespace AngularJSAuthentication.API.Migrations
 
         protected override void Seed(AngularJSAuthentication.API.AuthContext context)
         {
-            if (context.Clients.Count() > 0)
+            if (context.Clients.Any())
             {
                 return;
             }
@@ -46,7 +46,7 @@ namespace AngularJSAuthentication.API.Migrations
                 { Id = "consoleApp", 
                     Secret= CryptographyHelper.GetHash("123@abc"), 
                     Name="Console Application", 
-                    ApplicationType =ApplicationTypes.NativeConfidential, 
+                    ApplicationType = ApplicationTypes.NativeConfidential, 
                     Active = true, 
                     RefreshTokenLifeTime = 14400, 
                     AllowedOrigin = "*"

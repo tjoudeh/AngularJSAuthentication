@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using AngularJSAuthentication.Data.Attributes;
 using AngularJSAuthentication.Data.Infrastructure;
 using Microsoft.AspNet.Identity;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace AngularJSAuthentication.Data.Entities
@@ -12,6 +13,8 @@ namespace AngularJSAuthentication.Data.Entities
     public class User : IEntity<string>, IUser
     {
         [Key]
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
         [BsonElement("userId")]

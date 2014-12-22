@@ -8,6 +8,7 @@ using AngularJSAuthentication.Data.Infrastructure;
 using AngularJSAuthentication.Data.Interface;
 using Microsoft.AspNet.Identity;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 
@@ -20,9 +21,22 @@ namespace AngularJSAuthentication.Data.Repository
 
         private bool _disposed;
 
-        public void Dispose()
+        private readonly MongoRepository<TUser> _repository;
+
+        public UserRepository(MongoUrl mongoUrl)
         {
-            _disposed = true;
+            _repository = new MongoRepository<TUser>(); 
+        }
+
+        public UserRepository(string connectionString) : base(connectionString)
+        {
+            _repository = new MongoRepository<TUser>(connectionString);
+
+            var pack = new ConventionPack();
+            pack.Add(new CamelCaseElementNameConvention());
+            pack.Add(new IgnoreIfNullConvention(true));
+
+            ConventionRegistry.Register("camel case", pack, t => true);
         }
 
         public Task CreateAsync(TUser user)
@@ -56,10 +70,10 @@ namespace AngularJSAuthentication.Data.Repository
             return Task.FromResult(true);
         }
 
-        public Task<TUser> FindByIdAsync(string userId)
+        public Task<TUser> FindByIdAsync(string id)
         {
             ThrowIfDisposed();
-            var bsonId = ObjectId.Parse(userId);
+            var bsonId = ObjectId.Parse(id);
             TUser user = collection.FindOneByIdAs<TUser>(bsonId);
             return Task.FromResult(user);
         }
@@ -68,7 +82,7 @@ namespace AngularJSAuthentication.Data.Repository
         {
             ThrowIfDisposed();
 
-            TUser user = collection.FindOneAs<TUser>((Query.EQ("userName", userName)));
+            var user = collection.FindOneAs<TUser>((Query.EQ("userName", userName)));
             return Task.FromResult(user);
         }
 
@@ -109,8 +123,8 @@ namespace AngularJSAuthentication.Data.Repository
         public Task<TUser> FindAsync(UserLoginInfo login)
         {
             TUser user = null;
-            user = collection.FindOneAs<TUser>(Query.And(Query.EQ("logins.LoginProvider", login.LoginProvider),
-                        Query.EQ("logins.ProviderKey", login.ProviderKey)));
+            user = collection.FindOneAs<TUser>(Query.And(Query.EQ("logins.loginProvider", login.LoginProvider),
+                        Query.EQ("logins.providerKey", login.ProviderKey)));
 
             return Task.FromResult(user);
         }
@@ -234,6 +248,11 @@ namespace AngularJSAuthentication.Data.Repository
                 throw new ArgumentNullException("user");
 
             return Task.FromResult(user.SecurityStamp);
+        }
+
+        public void Dispose()
+        {
+            _disposed = true;
         }
 
         private void ThrowIfDisposed()
