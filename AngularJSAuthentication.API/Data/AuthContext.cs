@@ -1,12 +1,8 @@
-﻿using AngularJSAuthentication.Data.Entities;
+﻿using System.Data.Entity;
+using AngularJSAuthentication.Data.Entities;
 using Microsoft.AspNet.Identity.EntityFramework;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
 
-namespace AngularJSAuthentication.API
+namespace AngularJSAuthentication.API.Data
 {
     public class AuthContext : IdentityDbContext<IdentityUser>
     {

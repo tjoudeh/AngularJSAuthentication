@@ -1,4 +1,5 @@
-﻿using AngularJSAuthentication.API.Models;
+﻿using AngularJSAuthentication.API.Data;
+using AngularJSAuthentication.API.Models;
 using AngularJSAuthentication.Data.Entities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -9,8 +10,7 @@ using System.Threading.Tasks;
 
 namespace AngularJSAuthentication.API
 {
-
-    public class AuthRepository : IDisposable
+    public class AuthRepository : IAuthRepository
     {
         private AuthContext _ctx;
 
@@ -93,10 +93,6 @@ namespace AngularJSAuthentication.API
              return  _ctx.RefreshTokens.ToList();
         }
 
-
-
-
-
         public async Task<IdentityUser> FindAsync(UserLoginInfo loginInfo)
         {
             IdentityUser user = await _userManager.FindAsync(loginInfo);
@@ -125,4 +121,8 @@ namespace AngularJSAuthentication.API
 
         }
     }
+
+
+
+
 }

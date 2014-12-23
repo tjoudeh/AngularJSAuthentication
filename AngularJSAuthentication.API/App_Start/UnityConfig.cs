@@ -1,7 +1,11 @@
 using System;
 using System.Configuration;
+using AngularJSAuthentication.API.Data;
+using AngularJSAuthentication.Data.Entities;
 using AngularJSAuthentication.Data.Interface;
 using AngularJSAuthentication.Data.Repository;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Practices.Unity;
 
 namespace AngularJSAuthentication.API.App_Start
@@ -27,13 +31,16 @@ namespace AngularJSAuthentication.API.App_Start
 
             container.RegisterType<IClientRepository, ClientRepository>(new InjectionConstructor(connectionString));
             container.RegisterType<IRefreshTokenRepository, RefreshTokenRepository>(new InjectionConstructor(connectionString));
+            container.RegisterType<IUserRepository<User>, UserRepository<User>>(new InjectionConstructor(connectionString));
+            container.RegisterType<IUserStore<User>, UserRepository<User>>();
+
+            //container.RegisterType<IAuthRepository, MongoAuthRepository>();
             
+
+
+            container.RegisterType<IdentityDbContext<IdentityUser>, AuthContext>(new HierarchicalLifetimeManager());
+
         }
-
-
-
-
-
 
     }
 }

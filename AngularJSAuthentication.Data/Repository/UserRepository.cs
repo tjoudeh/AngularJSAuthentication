@@ -19,7 +19,7 @@ namespace AngularJSAuthentication.Data.Repository
        where TUser : User
     {
 
-        private bool _disposed;
+        public bool _disposed;
 
         private readonly MongoRepository<TUser> _repository;
 

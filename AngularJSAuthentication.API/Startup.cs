@@ -1,7 +1,15 @@
-﻿using AngularJSAuthentication.API.Providers;
+﻿using System.Configuration;
+using AngularJSAuthentication.API.App_Start;
+using AngularJSAuthentication.API.Data;
+using AngularJSAuthentication.API.Providers;
+using AngularJSAuthentication.Data.Entities;
+using AngularJSAuthentication.Data.Interface;
+using AngularJSAuthentication.Data.Repository;
+using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Google;
 using Microsoft.Owin.Security.OAuth;
+using Microsoft.Practices.Unity;
 using Owin;
 using System;
 using System.Data.Entity;
@@ -25,6 +33,21 @@ namespace AngularJSAuthentication.API
             WebApiConfig.Register(config);
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             app.UseWebApi(config);
+
+            var container = new UnityContainer();
+
+            string connectionString = ConfigurationManager.ConnectionStrings["MongoServerSettings"].ConnectionString;
+
+            container.RegisterType<IClientRepository, ClientRepository>(new InjectionConstructor(connectionString));
+            container.RegisterType<IRefreshTokenRepository, RefreshTokenRepository>(new InjectionConstructor(connectionString));
+
+            container.RegisterType<IUserRepository<User>, UserRepository<User>>(new InjectionConstructor(connectionString));
+            container.RegisterType<IUserStore<User>, UserRepository<User>>();
+
+            container.RegisterType<IAuthRepository, AuthRepository>();
+            
+            config.DependencyResolver = new UnityResolver(container);
+
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<AuthContext, AngularJSAuthentication.API.Migrations.Configuration>());
 
         }
