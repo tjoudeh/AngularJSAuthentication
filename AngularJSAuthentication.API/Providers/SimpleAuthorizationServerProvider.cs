@@ -1,4 +1,5 @@
-﻿using AngularJSAuthentication.Common.Helpers;
+﻿using AngularJSAuthentication.API.Data;
+using AngularJSAuthentication.Common.Helpers;
 using AngularJSAuthentication.Data.Entities;
 using AngularJSAuthentication.Data.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -15,11 +16,8 @@ namespace AngularJSAuthentication.API.Providers
     {
         public SimpleAuthorizationServerProvider()
         {
-            
+    
         }
-
-
-
 
         public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {

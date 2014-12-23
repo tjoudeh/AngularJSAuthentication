@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{
 		Documents\Notes.txt = Documents\Notes.txt
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngularJSAuthentication.Glass", "AngularJSAuthentication.Glass\AngularJSAuthentication.Glass.csproj", "{94C8AC83-18E6-4D0E-9EE4-FA12580E4083}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{D034B7F2-A930-447D-A803-17D798600ED7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D034B7F2-A930-447D-A803-17D798600ED7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D034B7F2-A930-447D-A803-17D798600ED7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94C8AC83-18E6-4D0E-9EE4-FA12580E4083}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94C8AC83-18E6-4D0E-9EE4-FA12580E4083}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94C8AC83-18E6-4D0E-9EE4-FA12580E4083}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94C8AC83-18E6-4D0E-9EE4-FA12580E4083}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
