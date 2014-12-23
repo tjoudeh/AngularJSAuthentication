@@ -42,7 +42,7 @@ namespace AngularJSAuthentication.API.Migrations
                 { Id = "consoleApp", 
                     Secret=Helper.GetHash("123@abc"), 
                     Name="Console Application", 
-                    ApplicationType =Models.ApplicationTypes.NativeConfidential, 
+                    ApplicationType = Models.ApplicationTypes.NativeConfidential, 
                     Active = true, 
                     RefreshTokenLifeTime = 14400, 
                     AllowedOrigin = "*"
