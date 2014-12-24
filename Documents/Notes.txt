@@ -14,3 +14,8 @@ http://msdn.microsoft.com/en-us/library/ms165413.aspx
 - AngularJSAuthentication.ResourceServer
 - AngularJSAuthentication.Web
 
+
+Links
+
+ASP.NET Web API and dependencies in request scope
+http://www.strathweb.com/2012/11/asp-net-web-api-and-dependencies-in-request-scope/

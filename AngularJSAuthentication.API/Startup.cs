@@ -4,6 +4,7 @@ using AngularJSAuthentication.API.Data;
 using AngularJSAuthentication.API.Providers;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Google;
+using Microsoft.Owin.Security.Infrastructure;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
@@ -33,15 +34,15 @@ namespace AngularJSAuthentication.API
         public void Configuration(IAppBuilder app)
         {
             var config = new HttpConfiguration();
+            
+            var container = UnityConfig.GetConfiguredContainer();
+            config.DependencyResolver = new UnityResolver(container);
 
             ConfigureOAuth(app);
 
             WebApiConfig.Register(config);
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             app.UseWebApi(config);
-
-            var container = UnityConfig.GetConfiguredContainer();
-            config.DependencyResolver = new UnityResolver(container);
 
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<AuthContext, AngularJSAuthentication.API.Migrations.Configuration>());
         }
@@ -57,10 +58,15 @@ namespace AngularJSAuthentication.API
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString(tokenEndpointPath),
                 AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30),
+                
+                //TODO Inject Providers 
                 Provider = new SimpleAuthorizationServerProvider(),
-                RefreshTokenProvider = new SimpleRefreshTokenProvider()
-            };
+                RefreshTokenProvider = new SimpleRefreshTokenProvider(),
 
+                //http://www.strathweb.com/2012/11/asp-net-web-api-and-dependencies-in-request-scope/
+                //Provider = GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IOAuthAuthorizationServerProvider)) as IOAuthAuthorizationServerProvider,
+                //RefreshTokenProvider = GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IAuthenticationTokenProvider)) as IAuthenticationTokenProvider,
+            };
 
             // Token Generation
             app.UseOAuthAuthorizationServer(OAuthServerOptions);
@@ -78,5 +84,4 @@ namespace AngularJSAuthentication.API
 
         }
     }
-
 }

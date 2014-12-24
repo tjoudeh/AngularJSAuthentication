@@ -1,10 +1,13 @@
 using System;
 using System.Configuration;
 using AngularJSAuthentication.API.Data;
+using AngularJSAuthentication.API.Providers;
 using AngularJSAuthentication.Data.Entities;
 using AngularJSAuthentication.Data.Interface;
 using AngularJSAuthentication.Data.Repository;
 using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security.Infrastructure;
+using Microsoft.Owin.Security.OAuth;
 using Microsoft.Practices.Unity;
 
 namespace AngularJSAuthentication.API.App_Start
@@ -34,6 +37,10 @@ namespace AngularJSAuthentication.API.App_Start
             container.RegisterType<IUserStore<User>, UserRepository<User>>();
 
             container.RegisterType<IAuthRepository, AuthRepository>();
+
+            container.RegisterType<IOAuthAuthorizationServerProvider, SimpleAuthorizationServerProvider>();
+            container.RegisterType<IAuthenticationTokenProvider, SimpleRefreshTokenProvider>();
+
         }
 
     }

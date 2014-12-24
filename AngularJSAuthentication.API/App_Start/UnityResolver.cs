@@ -30,6 +30,32 @@ namespace AngularJSAuthentication.API.App_Start
             }
         }
 
+        public T GetService<T>()
+        {
+            try
+            {
+                var serviceType = typeof(T);
+                return (T) container.Resolve(serviceType);
+            }
+            catch (ResolutionFailedException)
+            {
+                return default(T);
+            }
+        }
+
+        public T GetService<T>(string name)
+        {
+            try
+            {
+                var serviceType = typeof(T);
+                return (T)container.Resolve(serviceType, name);
+            }
+            catch (ResolutionFailedException)
+            {
+                return default(T);
+            }
+        }
+
         public IEnumerable<object> GetServices(Type serviceType)
         {
             try
