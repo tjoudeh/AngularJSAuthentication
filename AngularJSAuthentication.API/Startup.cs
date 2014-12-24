@@ -1,4 +1,5 @@
-﻿using AngularJSAuthentication.API.App_Start;
+﻿using System.Configuration;
+using AngularJSAuthentication.API.App_Start;
 using AngularJSAuthentication.API.Data;
 using AngularJSAuthentication.API.Providers;
 using Microsoft.Owin;
@@ -15,6 +16,17 @@ namespace AngularJSAuthentication.API
 {
     public class Startup
     {
+        private readonly string clientId;
+        private readonly string clientSecret;
+        private readonly string tokenEndpointPath;
+
+        public Startup()
+        {
+            clientId = ConfigurationManager.AppSettings["ClientId"];
+            clientSecret = ConfigurationManager.AppSettings["ClientSecret"];
+            tokenEndpointPath = ConfigurationManager.AppSettings["tokenEndpointPath"]; 
+        }
+
         public static OAuthBearerAuthenticationOptions OAuthBearerOptions { get; private set; }
         public static GoogleOAuth2AuthenticationOptions googleAuthOptions { get; private set; }
 
@@ -43,7 +55,7 @@ namespace AngularJSAuthentication.API
             var OAuthServerOptions = new OAuthAuthorizationServerOptions() {
             
                 AllowInsecureHttp = true,
-                TokenEndpointPath = new PathString("/token"),
+                TokenEndpointPath = new PathString(tokenEndpointPath),
                 AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30),
                 Provider = new SimpleAuthorizationServerProvider(),
                 RefreshTokenProvider = new SimpleRefreshTokenProvider()
@@ -57,8 +69,8 @@ namespace AngularJSAuthentication.API
             //Configure Google External Login
             googleAuthOptions = new GoogleOAuth2AuthenticationOptions()
             {
-                ClientId = "126018090035.apps.googleusercontent.com",
-                ClientSecret = "3cjg1BJ_MC_x2GKS55OW4jyC",
+                ClientId = clientId,
+                ClientSecret = clientSecret,
                 Provider = new GoogleAuthProvider()
             };
 
