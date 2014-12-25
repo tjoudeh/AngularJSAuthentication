@@ -64,8 +64,8 @@ namespace AngularJSAuthentication.API
                 RefreshTokenProvider = new SimpleRefreshTokenProvider(),
 
                 //http://www.strathweb.com/2012/11/asp-net-web-api-and-dependencies-in-request-scope/
-                //Provider = GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IOAuthAuthorizationServerProvider)) as IOAuthAuthorizationServerProvider,
-                //RefreshTokenProvider = GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IAuthenticationTokenProvider)) as IAuthenticationTokenProvider,
+                // Provider = GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IOAuthAuthorizationServerProvider)) as IOAuthAuthorizationServerProvider,
+                 //RefreshTokenProvider = GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IAuthenticationTokenProvider)) as IAuthenticationTokenProvider,
             };
 
             // Token Generation

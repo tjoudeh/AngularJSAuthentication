@@ -14,6 +14,7 @@ namespace AngularJSAuthentication.API.Data
         Task<IdentityUser> FindUser(string userName, string password);
         
         Client FindClient(string clientId);
+        
         Task<bool> AddRefreshToken(RefreshToken token);
 
         Task<bool> RemoveRefreshToken(string refreshTokenId);
@@ -24,6 +25,7 @@ namespace AngularJSAuthentication.API.Data
 
         Task<IdentityResult> AddLoginAsync(string userId, UserLoginInfo login);
 
+        Task<RefreshToken> FindRefreshToken(string refreshTokenId);
 
     }
 }
