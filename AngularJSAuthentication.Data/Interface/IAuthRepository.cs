@@ -1,17 +1,17 @@
 using System;
 using System.Threading.Tasks;
-using AngularJSAuthentication.API.Models;
 using AngularJSAuthentication.Data.Entities;
+using AngularJSAuthentication.Data.Models;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+
 
 namespace AngularJSAuthentication.API.Data
 {
     public interface IAuthRepository : IDisposable
     {
         Task<IdentityResult> RegisterUser(UserModel userModel);
-        
-        Task<IdentityUser> FindUser(string userName, string password);
+
+        Task<IUser> FindUser(string userName, string password);
         
         Client FindClient(string clientId);
         
@@ -19,9 +19,9 @@ namespace AngularJSAuthentication.API.Data
 
         Task<bool> RemoveRefreshToken(string refreshTokenId);
 
-        Task<IdentityUser> FindAsync(UserLoginInfo loginInfo);
+        Task<IUser> FindAsync(UserLoginInfo loginInfo);
 
-        Task<IdentityResult> CreateAsync(IdentityUser user);
+        Task<IdentityResult> CreateAsync(IUser user);
 
         Task<IdentityResult> AddLoginAsync(string userId, UserLoginInfo login);
 

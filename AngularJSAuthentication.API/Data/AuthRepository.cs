@@ -1,6 +1,7 @@
 ﻿using AngularJSAuthentication.API.Data;
 using AngularJSAuthentication.API.Models;
 using AngularJSAuthentication.Data.Entities;
+using AngularJSAuthentication.Data.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
@@ -34,7 +35,7 @@ namespace AngularJSAuthentication.API
             return result;
         }
 
-        public async Task<IdentityUser> FindUser(string userName, string password)
+        public async Task<IUser> FindUser(string userName, string password)
         {
             IdentityUser user = await _userManager.FindAsync(userName, password);
 
@@ -93,16 +94,17 @@ namespace AngularJSAuthentication.API
              return  _ctx.RefreshTokens.ToList();
         }
 
-        public async Task<IdentityUser> FindAsync(UserLoginInfo loginInfo)
+        public async Task<IUser> FindAsync(UserLoginInfo loginInfo)
         {
             IdentityUser user = await _userManager.FindAsync(loginInfo);
 
             return user;
         }
 
-        public async Task<IdentityResult> CreateAsync(IdentityUser user)
+        public async Task<IdentityResult> CreateAsync(IUser user)
         {
-            var result = await _userManager.CreateAsync(user);
+            var usr = (IdentityUser)user;
+            var result = await _userManager.CreateAsync(usr);
 
             return result;
         }

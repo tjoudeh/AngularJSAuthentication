@@ -1,6 +1,7 @@
 ﻿using AngularJSAuthentication.API.Data;
 using AngularJSAuthentication.API.Models;
 using AngularJSAuthentication.API.Results;
+using AngularJSAuthentication.Data.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -93,7 +94,7 @@ namespace AngularJSAuthentication.API.Controllers
                 return new ChallengeResult(provider, this);
             }
 
-            IdentityUser user = await authRepository.FindAsync(new UserLoginInfo(externalLogin.LoginProvider, externalLogin.ProviderKey));
+            var user = await authRepository.FindAsync(new UserLoginInfo(externalLogin.LoginProvider, externalLogin.ProviderKey));
 
             bool hasRegistered = user != null;
 
@@ -125,7 +126,7 @@ namespace AngularJSAuthentication.API.Controllers
                 return BadRequest("Invalid Provider or External Access Token");
             }
 
-            IdentityUser user = await authRepository.FindAsync(new UserLoginInfo(model.Provider, verifiedAccessToken.user_id));
+            var user = await authRepository.FindAsync(new UserLoginInfo(model.Provider, verifiedAccessToken.user_id));
 
             bool hasRegistered = user != null;
 
@@ -177,7 +178,7 @@ namespace AngularJSAuthentication.API.Controllers
                 return BadRequest("Invalid Provider or External Access Token");
             }
 
-            IdentityUser user = await authRepository.FindAsync(new UserLoginInfo(provider, verifiedAccessToken.user_id));
+            var user = await authRepository.FindAsync(new UserLoginInfo(provider, verifiedAccessToken.user_id));
 
             bool hasRegistered = user != null;
 

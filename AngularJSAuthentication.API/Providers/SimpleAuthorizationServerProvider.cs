@@ -87,7 +87,7 @@ namespace AngularJSAuthentication.API.Providers
 
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
             
-            IdentityUser user = await authRepository.FindUser(context.UserName, context.Password);
+            var user = await authRepository.FindUser(context.UserName, context.Password);
 
 
             if (user == null)
