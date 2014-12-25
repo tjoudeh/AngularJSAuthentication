@@ -53,19 +53,22 @@ namespace AngularJSAuthentication.API
             app.UseExternalSignInCookie(Microsoft.AspNet.Identity.DefaultAuthenticationTypes.ExternalCookie);
             OAuthBearerOptions = new OAuthBearerAuthenticationOptions();
 
+            //Is this code Correct
+            var container = UnityConfig.GetConfiguredContainer();
+            var resolver = new UnityResolver(container);
+
             var OAuthServerOptions = new OAuthAuthorizationServerOptions() {
             
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString(tokenEndpointPath),
                 AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30),
                 
-                //TODO Inject Providers 
-                Provider = new SimpleAuthorizationServerProvider(),
-                RefreshTokenProvider = new SimpleRefreshTokenProvider(),
+                //Inject Providers 
+                //Provider = new SimpleAuthorizationServerProvider(),
+                //RefreshTokenProvider = new SimpleRefreshTokenProvider(),
 
-                //http://www.strathweb.com/2012/11/asp-net-web-api-and-dependencies-in-request-scope/
-                 //Provider = GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(OAuthAuthorizationServerProvider)) as OAuthAuthorizationServerProvider,
-                 //RefreshTokenProvider = GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IAuthenticationTokenProvider)) as IAuthenticationTokenProvider,
+                Provider = resolver.GetService<OAuthAuthorizationServerProvider>(),
+                RefreshTokenProvider = resolver.GetService<IAuthenticationTokenProvider>(),
             };
 
             // Token Generation
