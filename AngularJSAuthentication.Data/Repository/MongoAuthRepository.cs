@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AngularJSAuthentication.API.Data;
 using AngularJSAuthentication.Data.Entities;
@@ -66,6 +67,11 @@ namespace AngularJSAuthentication.Data.Repository
         }
 
         public Task<RefreshToken> FindRefreshToken(string refreshTokenId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<RefreshToken> GetAllRefreshTokens()
         {
             throw new NotImplementedException();
         }

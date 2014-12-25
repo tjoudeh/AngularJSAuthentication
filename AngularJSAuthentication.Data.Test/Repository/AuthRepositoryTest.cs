@@ -27,7 +27,6 @@ namespace AngularJSAuthentication.Data.Test.Repository
             authRepository = Ioc.Container.Resolve<IAuthRepository>();
         }
 
-
         [Test]
         public void Can_Get_Client_By_Id()
         {

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AngularJSAuthentication.Data.Entities;
 using AngularJSAuthentication.Data.Models;
@@ -26,6 +27,8 @@ namespace AngularJSAuthentication.API.Data
         Task<IdentityResult> AddLoginAsync(string userId, UserLoginInfo login);
 
         Task<RefreshToken> FindRefreshToken(string refreshTokenId);
+
+        List<RefreshToken> GetAllRefreshTokens();
 
     }
 }
