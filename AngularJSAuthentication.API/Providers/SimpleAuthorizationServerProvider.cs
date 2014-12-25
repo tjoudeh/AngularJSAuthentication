@@ -16,7 +16,7 @@ namespace AngularJSAuthentication.API.Providers
     {
         //public SimpleAuthorizationServerProvider(IAuthRepository authRepository)
         //{
-            
+
         //}
 
         public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)

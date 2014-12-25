@@ -38,7 +38,7 @@ namespace AngularJSAuthentication.API.App_Start
 
             container.RegisterType<IAuthRepository, AuthRepository>();
 
-            container.RegisterType<IOAuthAuthorizationServerProvider, SimpleAuthorizationServerProvider>();
+            container.RegisterType<OAuthAuthorizationServerProvider, SimpleAuthorizationServerProvider>();
             container.RegisterType<IAuthenticationTokenProvider, SimpleRefreshTokenProvider>();
 
         }
