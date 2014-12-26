@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using AngularJSAuthentication.API.Data;
 using AngularJSAuthentication.Data.Entities;
 using AngularJSAuthentication.Data.Interface;
 using AngularJSAuthentication.Data.Models;
 using Microsoft.AspNet.Identity;
+using MongoDB.Bson;
 
 namespace AngularJSAuthentication.Data.Repository
 {
@@ -13,13 +15,19 @@ namespace AngularJSAuthentication.Data.Repository
     {
         private readonly IClientRepository clientRepository;
 
+        private readonly IRefreshTokenRepository refreshTokenRepository;
+
+        private readonly IUserRepository<User> userRepository;
+
         public bool _disposed;
 
-        public MongoAuthRepository(IClientRepository clientRepository)
+        public MongoAuthRepository(IClientRepository clientRepository, IRefreshTokenRepository refreshTokenRepository, IUserRepository<User> userRepository)
         {
             this.clientRepository = clientRepository;
-        }
+            this.refreshTokenRepository = refreshTokenRepository;
+            this.userRepository = userRepository;
 
+        }
 
         public Task<IdentityResult> RegisterUser(UserModel userModel)
         {
@@ -43,8 +51,14 @@ namespace AngularJSAuthentication.Data.Repository
 
         public Task<bool> AddRefreshToken(RefreshToken token)
         {
-            throw new NotImplementedException();
+            ThrowIfDisposed();
+            if (token == null)
+                throw new ArgumentNullException("token");
+
+            var refreshToken = refreshTokenRepository.AddRefreshToken(token);
+            return refreshToken;
         }
+
 
         public Task<bool> RemoveRefreshToken(string refreshTokenId)
         {
@@ -54,7 +68,30 @@ namespace AngularJSAuthentication.Data.Repository
         public Task<IUser> FindAsync(UserLoginInfo loginInfo)
         {
             throw new NotImplementedException();
+            
+            //ThrowIfDisposed();
+            //if (loginInfo == null)
+            //    throw new ArgumentNullException("loginInfo");
+
+            //Debug.Write(loginInfo.ToJson());
+
+
+            //var user =  userRepository.FindAsync(loginInfo);
+            //return user;
+
+
+            // return Task.FromResult(user);
         }
+
+
+
+
+
+
+
+
+
+
 
         public Task<IdentityResult> CreateAsync(IUser user)
         {

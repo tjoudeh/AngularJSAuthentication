@@ -19,3 +19,6 @@ Links
 
 ASP.NET Web API and dependencies in request scope
 http://www.strathweb.com/2012/11/asp-net-web-api-and-dependencies-in-request-scope/
+
+
+https://developers.google.com/glass/develop/mirror/authorization
