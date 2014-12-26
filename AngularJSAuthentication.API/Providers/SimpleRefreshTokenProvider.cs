@@ -1,17 +1,20 @@
-﻿using AngularJSAuthentication.API.Entities;
-using Microsoft.Owin.Security;
+﻿using AngularJSAuthentication.API.Data;
+using AngularJSAuthentication.Common.Helpers;
+using AngularJSAuthentication.Data.Entities;
 using Microsoft.Owin.Security.Infrastructure;
 using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace AngularJSAuthentication.API.Providers
 {
     public class SimpleRefreshTokenProvider : IAuthenticationTokenProvider
     {
+        private readonly IAuthRepository authRepository;
+
+        public SimpleRefreshTokenProvider(IAuthRepository authRepository)
+        {
+            this.authRepository = authRepository;
+        }
 
         public async Task CreateAsync(AuthenticationTokenCreateContext context)
         {
@@ -24,52 +27,43 @@ namespace AngularJSAuthentication.API.Providers
 
             var refreshTokenId = Guid.NewGuid().ToString("n");
 
-            using (AuthRepository _repo = new AuthRepository())
-            {
-                var refreshTokenLifeTime = context.OwinContext.Get<string>("as:clientRefreshTokenLifeTime"); 
+            var refreshTokenLifeTime = context.OwinContext.Get<string>("as:clientRefreshTokenLifeTime"); 
                
-                var token = new RefreshToken() 
-                { 
-                    Id = Helper.GetHash(refreshTokenId),
-                    ClientId = clientid, 
-                    Subject = context.Ticket.Identity.Name,
-                    IssuedUtc = DateTime.UtcNow,
-                    ExpiresUtc = DateTime.UtcNow.AddMinutes(Convert.ToDouble(refreshTokenLifeTime)) 
-                };
+            var token = new RefreshToken() 
+            {
+                Id = CryptographyHelper.GetHash(refreshTokenId),
+                ClientId = clientid, 
+                Subject = context.Ticket.Identity.Name,
+                IssuedUtc = DateTime.UtcNow,
+                ExpiresUtc = DateTime.UtcNow.AddMinutes(Convert.ToDouble(refreshTokenLifeTime)) 
+            };
 
-                context.Ticket.Properties.IssuedUtc = token.IssuedUtc;
-                context.Ticket.Properties.ExpiresUtc = token.ExpiresUtc;
+            context.Ticket.Properties.IssuedUtc = token.IssuedUtc;
+            context.Ticket.Properties.ExpiresUtc = token.ExpiresUtc;
                 
-                token.ProtectedTicket = context.SerializeTicket();
+            token.ProtectedTicket = context.SerializeTicket();
+            var result = await authRepository.AddRefreshToken(token);
 
-                var result = await _repo.AddRefreshToken(token);
-
-                if (result)
-                {
-                    context.SetToken(refreshTokenId);
-                }
-             
+            if (result)
+            {
+                context.SetToken(refreshTokenId);
             }
+
         }
 
         public async Task ReceiveAsync(AuthenticationTokenReceiveContext context)
         {
-
             var allowedOrigin = context.OwinContext.Get<string>("as:clientAllowedOrigin");
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
-            string hashedTokenId = Helper.GetHash(context.Token);
+            string hashedTokenId = CryptographyHelper.GetHash(context.Token);
 
-            using (AuthRepository _repo = new AuthRepository())
+            var refreshToken = await authRepository.FindRefreshToken(hashedTokenId);
+ 
+            if (refreshToken != null)
             {
-                var refreshToken = await _repo.FindRefreshToken(hashedTokenId);
-
-                if (refreshToken != null )
-                {
-                    //Get protectedTicket from refreshToken class
-                    context.DeserializeTicket(refreshToken.ProtectedTicket);
-                    var result = await _repo.RemoveRefreshToken(hashedTokenId);
-                }
+                context.DeserializeTicket(refreshToken.ProtectedTicket);
+                var result = await authRepository.RemoveRefreshToken(hashedTokenId);
             }
         }
 
@@ -83,4 +77,5 @@ namespace AngularJSAuthentication.API.Providers
             throw new NotImplementedException();
         }
     }
+
 }

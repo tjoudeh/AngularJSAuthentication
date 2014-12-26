@@ -1,5 +1,7 @@
-﻿using AngularJSAuthentication.API.Models;
+﻿using AngularJSAuthentication.API.Data;
+using AngularJSAuthentication.API.Models;
 using AngularJSAuthentication.API.Results;
+using AngularJSAuthentication.Data.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -7,13 +9,10 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
 
 namespace AngularJSAuthentication.API.Controllers
@@ -21,17 +20,18 @@ namespace AngularJSAuthentication.API.Controllers
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
-        private AuthRepository _repo = null;
-
         private IAuthenticationManager Authentication
         {
             get { return Request.GetOwinContext().Authentication; }
         }
 
-        public AccountController()
+        private readonly IAuthRepository authRepository;
+
+        public AccountController(IAuthRepository authRepository)
         {
-            _repo = new AuthRepository();
+            this.authRepository = authRepository;
         }
+
 
         // POST api/Account/Register
         [AllowAnonymous]
@@ -43,7 +43,7 @@ namespace AngularJSAuthentication.API.Controllers
                 return BadRequest(ModelState);
             }
 
-             IdentityResult result = await _repo.RegisterUser(userModel);
+             IdentityResult result = await authRepository.RegisterUser(userModel);
 
              IHttpActionResult errorResult = GetErrorResult(result);
 
@@ -94,7 +94,7 @@ namespace AngularJSAuthentication.API.Controllers
                 return new ChallengeResult(provider, this);
             }
 
-            IdentityUser user = await _repo.FindAsync(new UserLoginInfo(externalLogin.LoginProvider, externalLogin.ProviderKey));
+            var user = await authRepository.FindAsync(new UserLoginInfo(externalLogin.LoginProvider, externalLogin.ProviderKey));
 
             bool hasRegistered = user != null;
 
@@ -126,7 +126,7 @@ namespace AngularJSAuthentication.API.Controllers
                 return BadRequest("Invalid Provider or External Access Token");
             }
 
-            IdentityUser user = await _repo.FindAsync(new UserLoginInfo(model.Provider, verifiedAccessToken.user_id));
+            var user = await authRepository.FindAsync(new UserLoginInfo(model.Provider, verifiedAccessToken.user_id));
 
             bool hasRegistered = user != null;
 
@@ -137,7 +137,7 @@ namespace AngularJSAuthentication.API.Controllers
 
             user = new IdentityUser() { UserName = model.UserName };
 
-            IdentityResult result = await _repo.CreateAsync(user);
+            IdentityResult result = await authRepository.CreateAsync(user);
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
@@ -149,7 +149,7 @@ namespace AngularJSAuthentication.API.Controllers
                 Login = new UserLoginInfo(model.Provider, verifiedAccessToken.user_id)
             };
 
-            result = await _repo.AddLoginAsync(user.Id, info.Login);
+            result = await authRepository.AddLoginAsync(user.Id, info.Login);
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
@@ -178,7 +178,7 @@ namespace AngularJSAuthentication.API.Controllers
                 return BadRequest("Invalid Provider or External Access Token");
             }
 
-            IdentityUser user = await _repo.FindAsync(new UserLoginInfo(provider, verifiedAccessToken.user_id));
+            var user = await authRepository.FindAsync(new UserLoginInfo(provider, verifiedAccessToken.user_id));
 
             bool hasRegistered = user != null;
 
@@ -198,7 +198,7 @@ namespace AngularJSAuthentication.API.Controllers
         {
             if (disposing)
             {
-                _repo.Dispose();
+                authRepository.Dispose();
             }
 
             base.Dispose(disposing);
@@ -237,7 +237,6 @@ namespace AngularJSAuthentication.API.Controllers
 
         private string ValidateClientAndRedirectUri(HttpRequestMessage request, ref string redirectUriOutput)
         {
-
             Uri redirectUri;
 
             var redirectUriString = GetQueryString(Request, "redirect_uri");
@@ -261,16 +260,19 @@ namespace AngularJSAuthentication.API.Controllers
                 return "client_Id is required";
             }
 
-            var client = _repo.FindClient(clientId);
+            var client = authRepository.FindClient(clientId);
 
             if (client == null)
             {
                 return string.Format("Client_id '{0}' is not registered in the system.", clientId);
             }
 
-            if (!string.Equals(client.AllowedOrigin, redirectUri.GetLeftPart(UriPartial.Authority), StringComparison.OrdinalIgnoreCase))
+            if (client.AllowedOrigin != "*")
             {
-                return string.Format("The given URL is not allowed by Client_id '{0}' configuration.", clientId);
+                if (!string.Equals(client.AllowedOrigin, redirectUri.GetLeftPart(UriPartial.Authority), StringComparison.OrdinalIgnoreCase))
+                {
+                    return string.Format("The given URL is not allowed by Client_id '{0}' configuration.", clientId);
+                }
             }
 
             redirectUriOutput = redirectUri.AbsoluteUri;
@@ -298,14 +300,7 @@ namespace AngularJSAuthentication.API.Controllers
 
             var verifyTokenEndPoint = "";
 
-            if (provider == "Facebook")
-            {
-                //You can get it from here: https://developers.facebook.com/tools/accesstoken/
-                //More about debug_tokn here: http://stackoverflow.com/questions/16641083/how-does-one-get-the-app-access-token-for-debug-token-inspection-on-facebook
-                var appToken = "xxxxxx";
-                verifyTokenEndPoint = string.Format("https://graph.facebook.com/debug_token?input_token={0}&access_token={1}", accessToken, appToken);
-            }
-            else if (provider == "Google")
+            if (provider == "Google")
             {
                 verifyTokenEndPoint = string.Format("https://www.googleapis.com/oauth2/v1/tokeninfo?access_token={0}", accessToken);
             }
@@ -326,17 +321,7 @@ namespace AngularJSAuthentication.API.Controllers
 
                 parsedToken = new ParsedExternalAccessToken();
 
-                if (provider == "Facebook")
-                {
-                    parsedToken.user_id = jObj["data"]["user_id"];
-                    parsedToken.app_id = jObj["data"]["app_id"];
-
-                    if (!string.Equals(Startup.facebookAuthOptions.AppId, parsedToken.app_id, StringComparison.OrdinalIgnoreCase))
-                    {
-                        return null;
-                    }
-                }
-                else if (provider == "Google")
+                if (provider == "Google")
                 {
                     parsedToken.user_id = jObj["user_id"];
                     parsedToken.app_id = jObj["audience"];

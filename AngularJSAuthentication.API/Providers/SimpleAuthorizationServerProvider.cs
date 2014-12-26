@@ -1,23 +1,30 @@
-﻿using AngularJSAuthentication.API.Entities;
+﻿using AngularJSAuthentication.API.Data;
+using AngularJSAuthentication.Common.Helpers;
+using AngularJSAuthentication.Data.Entities;
+using AngularJSAuthentication.Data.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace AngularJSAuthentication.API.Providers
 {
     public class SimpleAuthorizationServerProvider : OAuthAuthorizationServerProvider
     {
+        private readonly IAuthRepository authRepository;
+
+        public SimpleAuthorizationServerProvider(IAuthRepository authRepository)
+        {
+            this.authRepository = authRepository;
+        }
+
         public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
-
-            string clientId = string.Empty;
-            string clientSecret = string.Empty;
+            string clientId;
+            string clientSecret;
             Client client = null;
 
             if (!context.TryGetBasicCredentials(out clientId, out clientSecret))
@@ -34,10 +41,7 @@ namespace AngularJSAuthentication.API.Providers
                 return Task.FromResult<object>(null);
             }
 
-            using (AuthRepository _repo = new AuthRepository())
-            {
-                client = _repo.FindClient(context.ClientId);
-            }
+            client = authRepository.FindClient(context.ClientId);
 
             if (client == null)
             {
@@ -45,7 +49,7 @@ namespace AngularJSAuthentication.API.Providers
                 return Task.FromResult<object>(null);
             }
 
-            if (client.ApplicationType == Models.ApplicationTypes.NativeConfidential)
+            if (client.ApplicationType == ApplicationTypes.NativeConfidential)
             {
                 if (string.IsNullOrWhiteSpace(clientSecret))
                 {
@@ -54,7 +58,7 @@ namespace AngularJSAuthentication.API.Providers
                 }
                 else
                 {
-                    if (client.Secret != Helper.GetHash(clientSecret))
+                    if (client.Secret != CryptographyHelper.GetHash(clientSecret))
                     {
                         context.SetError("invalid_clientId", "Client secret is invalid.");
                         return Task.FromResult<object>(null);
@@ -77,23 +81,21 @@ namespace AngularJSAuthentication.API.Providers
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-
             var allowedOrigin = context.OwinContext.Get<string>("as:clientAllowedOrigin");
 
             if (allowedOrigin == null) allowedOrigin = "*";
 
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
+            
+            var user = await authRepository.FindUser(context.UserName, context.Password);
 
-            using (AuthRepository _repo = new AuthRepository())
+
+            if (user == null)
             {
-                IdentityUser user = await _repo.FindUser(context.UserName, context.Password);
-
-                if (user == null)
-                {
-                    context.SetError("invalid_grant", "The user name or password is incorrect.");
-                    return;
-                }
+                context.SetError("invalid_grant", "The user name or password is incorrect.");
+                return;
             }
+        
 
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
@@ -103,7 +105,7 @@ namespace AngularJSAuthentication.API.Providers
             var props = new AuthenticationProperties(new Dictionary<string, string>
                 {
                     { 
-                        "as:client_id", (context.ClientId == null) ? string.Empty : context.ClientId
+                        "as:client_id", context.ClientId ?? string.Empty
                     },
                     { 
                         "userName", context.UserName
@@ -153,4 +155,5 @@ namespace AngularJSAuthentication.API.Providers
         }
 
     }
+
 }

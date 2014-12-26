@@ -23,6 +23,12 @@ app.config(function ($routeProvider) {
         templateUrl: "/app/views/orders.html"
     });
 
+
+    $routeProvider.when("/subscriptions", {
+        controller: "subscriptionsController",
+        templateUrl: "/app/views/subscriptions.html"
+    });
+
     $routeProvider.when("/refresh", {
         controller: "refreshController",
         templateUrl: "/app/views/refresh.html"
@@ -42,8 +48,8 @@ app.config(function ($routeProvider) {
 
 });
 
-//var serviceBase = 'http://localhost:26264/';
-var serviceBase = 'http://ngauthenticationapi.azurewebsites.net/';
+var serviceBase = 'http://localhost:26264/';
+//var serviceBase = 'http://ngauthenticationapi.azurewebsites.net/';
 app.constant('ngAuthSettings', {
     apiServiceBaseUri: serviceBase,
     clientId: 'ngAuthApp'

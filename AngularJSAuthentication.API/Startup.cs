@@ -1,14 +1,14 @@
-﻿using AngularJSAuthentication.API.Providers;
+﻿using System.Configuration;
+using AngularJSAuthentication.API.App_Start;
+using AngularJSAuthentication.API.Data;
+using AngularJSAuthentication.API.Providers;
 using Microsoft.Owin;
-using Microsoft.Owin.Security.Facebook;
 using Microsoft.Owin.Security.Google;
+using Microsoft.Owin.Security.Infrastructure;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Web;
 using System.Web.Http;
 
 [assembly: OwinStartup(typeof(AngularJSAuthentication.API.Startup))]
@@ -17,21 +17,34 @@ namespace AngularJSAuthentication.API
 {
     public class Startup
     {
+        private readonly string clientId;
+        private readonly string clientSecret;
+        private readonly string tokenEndpointPath;
+
+        public Startup()
+        {
+            clientId = ConfigurationManager.AppSettings["ClientId"];
+            clientSecret = ConfigurationManager.AppSettings["ClientSecret"];
+            tokenEndpointPath = ConfigurationManager.AppSettings["tokenEndpointPath"]; 
+        }
+
         public static OAuthBearerAuthenticationOptions OAuthBearerOptions { get; private set; }
         public static GoogleOAuth2AuthenticationOptions googleAuthOptions { get; private set; }
-        public static FacebookAuthenticationOptions facebookAuthOptions { get; private set; }
 
         public void Configuration(IAppBuilder app)
         {
-            HttpConfiguration config = new HttpConfiguration();
+            var config = new HttpConfiguration();
+            
+            var container = UnityConfig.GetConfiguredContainer();
+            config.DependencyResolver = new UnityResolver(container);
 
             ConfigureOAuth(app);
 
             WebApiConfig.Register(config);
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             app.UseWebApi(config);
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<AuthContext, AngularJSAuthentication.API.Migrations.Configuration>());
 
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<AuthContext, AngularJSAuthentication.API.Migrations.Configuration>());
         }
 
         public void ConfigureOAuth(IAppBuilder app)
@@ -40,13 +53,22 @@ namespace AngularJSAuthentication.API
             app.UseExternalSignInCookie(Microsoft.AspNet.Identity.DefaultAuthenticationTypes.ExternalCookie);
             OAuthBearerOptions = new OAuthBearerAuthenticationOptions();
 
-            OAuthAuthorizationServerOptions OAuthServerOptions = new OAuthAuthorizationServerOptions() {
+            //Is this code Correct
+            var container = UnityConfig.GetConfiguredContainer();
+            var resolver = new UnityResolver(container);
+
+            var OAuthServerOptions = new OAuthAuthorizationServerOptions() {
             
                 AllowInsecureHttp = true,
-                TokenEndpointPath = new PathString("/token"),
+                TokenEndpointPath = new PathString(tokenEndpointPath),
                 AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30),
-                Provider = new SimpleAuthorizationServerProvider(),
-                RefreshTokenProvider = new SimpleRefreshTokenProvider()
+                
+                //Inject Providers 
+                //Provider = new SimpleAuthorizationServerProvider(),
+                //RefreshTokenProvider = new SimpleRefreshTokenProvider(),
+
+                Provider = resolver.GetService<OAuthAuthorizationServerProvider>(),
+                RefreshTokenProvider = resolver.GetService<IAuthenticationTokenProvider>(),
             };
 
             // Token Generation
@@ -56,22 +78,13 @@ namespace AngularJSAuthentication.API
             //Configure Google External Login
             googleAuthOptions = new GoogleOAuth2AuthenticationOptions()
             {
-                ClientId = "xxxxxx",
-                ClientSecret = "xxxxxx",
+                ClientId = clientId,
+                ClientSecret = clientSecret,
                 Provider = new GoogleAuthProvider()
             };
-            app.UseGoogleAuthentication(googleAuthOptions);
 
-            //Configure Facebook External Login
-            facebookAuthOptions = new FacebookAuthenticationOptions()
-            {
-                AppId = "xxxxxx",
-                AppSecret = "xxxxxx",
-                Provider = new FacebookAuthProvider()
-            };
-            app.UseFacebookAuthentication(facebookAuthOptions);
+            app.UseGoogleAuthentication(googleAuthOptions);
 
         }
     }
-
 }
