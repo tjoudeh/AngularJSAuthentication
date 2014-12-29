@@ -7,6 +7,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngularJSAuthentication.API
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngularJSAuthentication.Web", "AngularJSAuthentication.Web\AngularJSAuthentication.Web.csproj", "{E4156422-2684-4222-95C2-4B9AE4CBA7E3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{0E2542F4-2BAC-4D20-A9BC-740921F63F1B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{12356D1B-84D5-4844-8AC8-031D6EE10102}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core.ApplicationServices", "Core.ApplicationServices", "{24CF9AA7-AF82-4A30-98DD-BE11E59307F4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core.DomainModel", "Core.DomainModel", "{01E019F4-BE53-4655-8BCD-17B261C2201D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core.DomainServices", "Core.DomainServices", "{4206CEE8-85CF-403A-A54F-CBE1847FE775}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure.API", "Infrastructure.API", "{71A6E9FA-A86C-41E9-AC1F-8D4BD686D9E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +36,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{23DFCFD5-B158-4C0D-9C31-5E9CB64C64CF} = {71A6E9FA-A86C-41E9-AC1F-8D4BD686D9E1}
+		{E4156422-2684-4222-95C2-4B9AE4CBA7E3} = {0E2542F4-2BAC-4D20-A9BC-740921F63F1B}
 	EndGlobalSection
 EndGlobal
