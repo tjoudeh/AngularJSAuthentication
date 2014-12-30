@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace AngularJSAuthentication.API.Entities
+namespace Infrastructure.API.Entities
 {
     public class RefreshToken
     {

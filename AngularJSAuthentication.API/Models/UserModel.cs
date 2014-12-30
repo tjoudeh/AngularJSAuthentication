@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace AngularJSAuthentication.API.Models
+namespace Infrastructure.API.Models
 {
     public class UserModel
     {

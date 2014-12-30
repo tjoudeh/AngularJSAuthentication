@@ -1,19 +1,18 @@
-﻿using AngularJSAuthentication.API.Providers;
+﻿using System;
+using System.Data.Entity;
+using System.Web.Http;
+using Infrastructure.API;
+using Infrastructure.API.Migrations;
+using Infrastructure.API.Providers;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Facebook;
 using Microsoft.Owin.Security.Google;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
-using System.Web.Http;
 
-[assembly: OwinStartup(typeof(AngularJSAuthentication.API.Startup))]
+[assembly: OwinStartup(typeof(Startup))]
 
-namespace AngularJSAuthentication.API
+namespace Infrastructure.API
 {
     public class Startup
     {
@@ -30,7 +29,7 @@ namespace AngularJSAuthentication.API
             WebApiConfig.Register(config);
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             app.UseWebApi(config);
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<AuthContext, AngularJSAuthentication.API.Migrations.Configuration>());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<AuthContext, Configuration>());
 
         }
 

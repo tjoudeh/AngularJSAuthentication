@@ -1,12 +1,8 @@
-﻿using Microsoft.Owin.Security.Facebook;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
+using Microsoft.Owin.Security.Facebook;
 
-namespace AngularJSAuthentication.API.Providers
+namespace Infrastructure.API.Providers
 {
     public class FacebookAuthProvider : FacebookAuthenticationProvider
     {

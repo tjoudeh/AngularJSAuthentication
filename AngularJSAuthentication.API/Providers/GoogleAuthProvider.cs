@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Microsoft.Owin;
-using Microsoft.Owin.Security.Facebook;
-using Microsoft.Owin.Security.Google;
-using Microsoft.Owin.Security.OAuth;
-using Owin;
+﻿using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Security.Claims;
+using Microsoft.Owin.Security.Google;
 
-namespace AngularJSAuthentication.API.Providers
+namespace Infrastructure.API.Providers
 {
     public class GoogleAuthProvider : IGoogleOAuth2AuthenticationProvider
     {

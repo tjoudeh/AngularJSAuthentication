@@ -1,14 +1,9 @@
-﻿using AngularJSAuthentication.API.Entities;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Infrastructure;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Threading.Tasks;
-using System.Web;
+using Infrastructure.API.Entities;
+using Microsoft.Owin.Security.Infrastructure;
 
-namespace AngularJSAuthentication.API.Providers
+namespace Infrastructure.API.Providers
 {
     public class SimpleRefreshTokenProvider : IAuthenticationTokenProvider
     {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace AngularJSAuthentication.API.Models
+﻿namespace Infrastructure.API.Models
 {
     public enum ApplicationTypes
     {

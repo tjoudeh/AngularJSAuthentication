@@ -1,7 +1,7 @@
-﻿using AngularJSAuthentication.API.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using Infrastructure.API.Models;
 
-namespace AngularJSAuthentication.API.Entities
+namespace Infrastructure.API.Entities
 {
     public class Client
     {
