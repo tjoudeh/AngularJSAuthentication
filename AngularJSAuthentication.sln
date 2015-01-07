@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.API", "AngularJSAuthentication.API\Infrastructure.API.csproj", "{23DFCFD5-B158-4C0D-9C31-5E9CB64C64CF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngularJSAuthentication.Web", "AngularJSAuthentication.Web\AngularJSAuthentication.Web.csproj", "{E4156422-2684-4222-95C2-4B9AE4CBA7E3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{0E2542F4-2BAC-4D20-A9BC-740921F63F1B}"
@@ -19,26 +17,28 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core.DomainServices", "Core
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure.API", "Infrastructure.API", "{71A6E9FA-A86C-41E9-AC1F-8D4BD686D9E1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.API", "Infrastructure.API\Infrastructure.API.csproj", "{23DFCFD5-B158-4C0D-9C31-5E9CB64C64CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{23DFCFD5-B158-4C0D-9C31-5E9CB64C64CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{23DFCFD5-B158-4C0D-9C31-5E9CB64C64CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{23DFCFD5-B158-4C0D-9C31-5E9CB64C64CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{23DFCFD5-B158-4C0D-9C31-5E9CB64C64CF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E4156422-2684-4222-95C2-4B9AE4CBA7E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E4156422-2684-4222-95C2-4B9AE4CBA7E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4156422-2684-4222-95C2-4B9AE4CBA7E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4156422-2684-4222-95C2-4B9AE4CBA7E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23DFCFD5-B158-4C0D-9C31-5E9CB64C64CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23DFCFD5-B158-4C0D-9C31-5E9CB64C64CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23DFCFD5-B158-4C0D-9C31-5E9CB64C64CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23DFCFD5-B158-4C0D-9C31-5E9CB64C64CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{23DFCFD5-B158-4C0D-9C31-5E9CB64C64CF} = {71A6E9FA-A86C-41E9-AC1F-8D4BD686D9E1}
 		{E4156422-2684-4222-95C2-4B9AE4CBA7E3} = {0E2542F4-2BAC-4D20-A9BC-740921F63F1B}
+		{23DFCFD5-B158-4C0D-9C31-5E9CB64C64CF} = {71A6E9FA-A86C-41E9-AC1F-8D4BD686D9E1}
 	EndGlobalSection
 EndGlobal
