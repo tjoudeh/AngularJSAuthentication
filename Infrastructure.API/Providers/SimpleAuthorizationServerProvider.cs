@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Infrastructure.API.Entities;
-using Infrastructure.API.Models;
+using Core.DomainModel.AuthEntities;
+using Infrastructure.Login;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;

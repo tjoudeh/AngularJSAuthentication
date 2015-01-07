@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 
-namespace Infrastructure.API
+namespace Infrastructure
 {
     public class Helper
     {

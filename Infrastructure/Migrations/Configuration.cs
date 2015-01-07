@@ -1,21 +1,23 @@
 using System.Collections.Generic;
-using System.Data.Entity.Migrations;
-using System.Linq;
-using Infrastructure.API.Entities;
-using Infrastructure.API.Models;
+using Core.DomainModel.AuthEntities;
 
-namespace Infrastructure.API.Migrations
+namespace Infrastructure.Migrations
 {
-    internal sealed class Configuration : DbMigrationsConfiguration<AuthContext>
+    using System.Data.Entity.Migrations;
+    using System.Linq;
+
+    public sealed class Configuration : DbMigrationsConfiguration<Infrastructure.Login.AuthContext>
     {
         public Configuration()
         {
+            //AutomaticMigrationsEnabled = false; MAYBE?
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(AuthContext context)
+        protected override void Seed(Infrastructure.Login.AuthContext context)
         {
-            if (context.Clients.Count() > 0)
+
+            if (context.Clients.Any())
             {
                 return;
             }
@@ -24,13 +26,14 @@ namespace Infrastructure.API.Migrations
             context.SaveChanges();
         }
 
-        private static List<Client> BuildClientsList()
+        private static IEnumerable<Client> BuildClientsList()
         {
 
-            List<Client> ClientsList = new List<Client> 
+            var clientsList = new List<Client> 
             {
                 new Client
-                { Id = "ngAuthApp", 
+                { 
+                    Id = "ngAuthApp", 
                     Secret= Helper.GetHash("abc@123"), 
                     Name="AngularJS front-end Application", 
                     ApplicationType =  ApplicationTypes.JavaScript, 
@@ -40,8 +43,9 @@ namespace Infrastructure.API.Migrations
                     AllowedOrigin = "https://localhost:44301"
                 },
                 new Client
-                { Id = "consoleApp", 
-                    Secret=Helper.GetHash("123@abc"), 
+                { 
+                    Id = "consoleApp", 
+                    Secret= Helper.GetHash("123@abc"), 
                     Name="Console Application", 
                     ApplicationType = ApplicationTypes.NativeConfidential, 
                     Active = true, 
@@ -50,7 +54,7 @@ namespace Infrastructure.API.Migrations
                 }
             };
 
-            return ClientsList;
+            return clientsList;
         }
     }
 }

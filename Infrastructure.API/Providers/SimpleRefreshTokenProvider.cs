@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Infrastructure.API.Entities;
+using Core.DomainModel.AuthEntities;
+using Infrastructure.Login;
 using Microsoft.Owin.Security.Infrastructure;
 
 namespace Infrastructure.API.Providers

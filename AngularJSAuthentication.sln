@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngularJSAuthentication.Web
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{0E2542F4-2BAC-4D20-A9BC-740921F63F1B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{12356D1B-84D5-4844-8AC8-031D6EE10102}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core.DataAccessLayer", "Core.DataAccessLayer", "{12356D1B-84D5-4844-8AC8-031D6EE10102}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core.ApplicationServices", "Core.ApplicationServices", "{24CF9AA7-AF82-4A30-98DD-BE11E59307F4}"
 EndProject
@@ -18,6 +18,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure.API", "Infrastructure.API", "{71A6E9FA-A86C-41E9-AC1F-8D4BD686D9E1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.API", "Infrastructure.API\Infrastructure.API.csproj", "{23DFCFD5-B158-4C0D-9C31-5E9CB64C64CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{B34E140E-B88E-4EFD-8CB8-E07ED02879CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.DomainServices", "Core.DomainServices\Core.DomainServices.csproj", "{E4DA9ECA-8F61-4427-B541-68B1955167C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.DomainModel", "Core.DomainModel\Core.DomainModel.csproj", "{60C503EF-B08F-4788-8ACE-776DDFB0F8D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +39,18 @@ Global
 		{23DFCFD5-B158-4C0D-9C31-5E9CB64C64CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23DFCFD5-B158-4C0D-9C31-5E9CB64C64CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23DFCFD5-B158-4C0D-9C31-5E9CB64C64CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B34E140E-B88E-4EFD-8CB8-E07ED02879CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B34E140E-B88E-4EFD-8CB8-E07ED02879CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B34E140E-B88E-4EFD-8CB8-E07ED02879CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B34E140E-B88E-4EFD-8CB8-E07ED02879CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4DA9ECA-8F61-4427-B541-68B1955167C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4DA9ECA-8F61-4427-B541-68B1955167C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4DA9ECA-8F61-4427-B541-68B1955167C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4DA9ECA-8F61-4427-B541-68B1955167C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60C503EF-B08F-4788-8ACE-776DDFB0F8D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60C503EF-B08F-4788-8ACE-776DDFB0F8D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60C503EF-B08F-4788-8ACE-776DDFB0F8D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60C503EF-B08F-4788-8ACE-776DDFB0F8D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -40,5 +58,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{E4156422-2684-4222-95C2-4B9AE4CBA7E3} = {0E2542F4-2BAC-4D20-A9BC-740921F63F1B}
 		{23DFCFD5-B158-4C0D-9C31-5E9CB64C64CF} = {71A6E9FA-A86C-41E9-AC1F-8D4BD686D9E1}
+		{B34E140E-B88E-4EFD-8CB8-E07ED02879CC} = {12356D1B-84D5-4844-8AC8-031D6EE10102}
+		{E4DA9ECA-8F61-4427-B541-68B1955167C0} = {4206CEE8-85CF-403A-A54F-CBE1847FE775}
+		{60C503EF-B08F-4788-8ACE-776DDFB0F8D4} = {01E019F4-BE53-4655-8BCD-17B261C2201D}
 	EndGlobalSection
 EndGlobal

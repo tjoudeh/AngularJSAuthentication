@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.API.Models
+﻿namespace Core.DomainModel.AuthEntities
 {
     public enum ApplicationTypes
     {

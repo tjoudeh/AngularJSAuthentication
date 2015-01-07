@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Http;
+using Infrastructure.Login;
 
 namespace Infrastructure.API.Controllers
 {

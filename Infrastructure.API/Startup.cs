@@ -2,8 +2,8 @@
 using System.Data.Entity;
 using System.Web.Http;
 using Infrastructure.API;
-using Infrastructure.API.Migrations;
 using Infrastructure.API.Providers;
+using Infrastructure.Login;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Facebook;
 using Microsoft.Owin.Security.Google;
@@ -29,8 +29,7 @@ namespace Infrastructure.API
             WebApiConfig.Register(config);
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             app.UseWebApi(config);
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<AuthContext, Configuration>());
-
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<AuthContext, Migrations.Configuration>());
         }
 
         public void ConfigureOAuth(IAppBuilder app)

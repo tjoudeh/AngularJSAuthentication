@@ -2,18 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Infrastructure.API.Entities;
-using Infrastructure.API.Models;
+using Core.DomainModel.AuthEntities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace Infrastructure.API
+namespace Infrastructure.Login
 {
 
     public class AuthRepository : IDisposable
     {
         private AuthContext _ctx;
-
         private UserManager<IdentityUser> _userManager;
 
         public AuthRepository()

@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Infrastructure.API.Models;
 
-namespace Infrastructure.API.Entities
+namespace Core.DomainModel.AuthEntities
 {
     public class Client
     {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Infrastructure.API.Models
+namespace Core.DomainModel.AuthEntities
 {
     public class UserModel
     {
