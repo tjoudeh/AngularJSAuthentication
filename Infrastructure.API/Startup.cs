@@ -29,7 +29,7 @@ namespace Infrastructure.API
             WebApiConfig.Register(config);
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             app.UseWebApi(config);
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<AuthContext, Migrations.Configuration>());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<AuthContext, Migrations.AuthConfiguration>());
         }
 
         public void ConfigureOAuth(IAppBuilder app)

@@ -6,11 +6,11 @@ namespace Infrastructure.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    public sealed class Configuration : DbMigrationsConfiguration<Infrastructure.Login.AuthContext>
+    public sealed class AuthConfiguration : DbMigrationsConfiguration<Infrastructure.Login.AuthContext>
     {
-        public Configuration()
+        public AuthConfiguration()
         {
-            //AutomaticMigrationsEnabled = false; MAYBE?
+            //AutomaticMigrationsEnabled = false; Why?
             AutomaticMigrationsEnabled = true;
         }
 
