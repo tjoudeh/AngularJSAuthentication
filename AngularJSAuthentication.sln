@@ -16,6 +16,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core.DomainServices", "Core.DomainServices", "{4206CEE8-85CF-403A-A54F-CBE1847FE775}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure.API", "Infrastructure.API", "{71A6E9FA-A86C-41E9-AC1F-8D4BD686D9E1}"
+	ProjectSection(SolutionItems) = preProject
+		ConnectionStrings.config = ConnectionStrings.config
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.API", "Infrastructure.API\Infrastructure.API.csproj", "{23DFCFD5-B158-4C0D-9C31-5E9CB64C64CF}"
 EndProject

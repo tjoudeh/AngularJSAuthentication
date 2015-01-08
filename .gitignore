@@ -215,3 +215,4 @@ pip-log.txt
 .mr.developer.cfg
 *.mdf
 /AngularJSAuthentication.API/App_Data/SampleData_log.ldf
+*.ldf

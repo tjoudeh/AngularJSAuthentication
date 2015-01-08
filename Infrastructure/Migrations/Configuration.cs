@@ -11,7 +11,7 @@ namespace Infrastructure.Migrations
         public Configuration()
         {
             //AutomaticMigrationsEnabled = false; MAYBE?
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(Infrastructure.Login.AuthContext context)
@@ -34,9 +34,9 @@ namespace Infrastructure.Migrations
                 new Client
                 { 
                     Id = "ngAuthApp", 
-                    Secret= Helper.GetHash("abc@123"), 
+                    Secret = Helper.GetHash("abc@123"), 
                     Name="AngularJS front-end Application", 
-                    ApplicationType =  ApplicationTypes.JavaScript, 
+                    ApplicationType = ApplicationTypes.JavaScript, 
                     Active = true, 
                     RefreshTokenLifeTime = 7200, 
                     //Change this to real URL
