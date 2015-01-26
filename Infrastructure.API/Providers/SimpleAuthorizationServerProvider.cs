@@ -29,7 +29,7 @@ namespace Infrastructure.API.Providers
                 //Remove the comments from the below line context.SetError, and invalidate context 
                 //if you want to force sending clientId/secrects once obtain access tokens. 
                 context.Validated();
-                //context.SetError("Please try agian in a few minutes", "The problem is on the server side");
+                //context.SetError("No validated token found", "No validated token found, Please try agian");
                 return Task.FromResult<object>(null);
             }
 

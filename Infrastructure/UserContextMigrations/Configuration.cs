@@ -18,11 +18,11 @@ namespace Infrastructure.UserContextMigrations
         protected override void Seed(Infrastructure.Login.AuthContext context)
         {
 
-            if (context.Users.FirstOrDefault(user => user.UserName == "Admin") == null) 
+            if (context.Users.FirstOrDefault(user => user.UserName == "Admin") == null)
                 context.Users.Add(new IdentityUser
                 {
                     UserName = "Admin",
-                    PasswordHash = "AKPXDFk6ViCEQBmoNirTVQjz17x8PbjxjaVuwqeWNPqsH9vTVgn36cymhj/t6tbmIQ=="
+                    PasswordHash = "AAnCjncmdIyCvpylYGBcWsZeTiRWH/U5Zpzfc8mX+mlMbUBImctqc2cpzuhG4Xpdyg==" //123456
                 });
 
             if (!context.Clients.Any()) context.Clients.AddRange(BuildClientsList());
