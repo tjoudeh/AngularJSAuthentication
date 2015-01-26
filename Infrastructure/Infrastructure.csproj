@@ -52,14 +52,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataContextMigrations\Configuration.cs" />
     <Compile Include="Data\GenericRepository.cs" />
     <Compile Include="Data\SampleContext.cs" />
     <Compile Include="Data\UnitOfWork.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Login\AuthContext.cs" />
     <Compile Include="Login\AuthRepository.cs" />
-    <Compile Include="Migrations\AuthConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserContextMigrations\201501262129184_Initial.cs" />
+    <Compile Include="UserContextMigrations\201501262129184_Initial.Designer.cs">
+      <DependentUpon>201501262129184_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserContextMigrations\201501262136518_SeedMe.cs" />
+    <Compile Include="UserContextMigrations\201501262136518_SeedMe.Designer.cs">
+      <DependentUpon>201501262136518_SeedMe.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserContextMigrations\Configuration.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core.DomainModel\Core.DomainModel.csproj">
@@ -73,7 +82,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UserContextMigrations\201501262129184_Initial.resx">
+      <DependentUpon>201501262129184_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserContextMigrations\201501262136518_SeedMe.resx">
+      <DependentUpon>201501262136518_SeedMe.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

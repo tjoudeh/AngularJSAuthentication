@@ -1,28 +1,32 @@
 using System.Collections.Generic;
+using System.Linq;
 using Core.DomainModel.AuthEntities;
+using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace Infrastructure.Migrations
+namespace Infrastructure.UserContextMigrations
 {
     using System.Data.Entity.Migrations;
-    using System.Linq;
 
-    public sealed class AuthConfiguration : DbMigrationsConfiguration<Infrastructure.Login.AuthContext>
+    public class Configuration : DbMigrationsConfiguration<Infrastructure.Login.AuthContext>
     {
-        public AuthConfiguration()
+        public Configuration()
         {
-            //AutomaticMigrationsEnabled = false; Why?
             AutomaticMigrationsEnabled = true;
+            MigrationsDirectory = @"UserContextMigrations";
         }
 
         protected override void Seed(Infrastructure.Login.AuthContext context)
         {
 
-            if (context.Clients.Any())
-            {
-                return;
-            }
+            if (context.Users.FirstOrDefault(user => user.UserName == "Admin") == null) 
+                context.Users.Add(new IdentityUser
+                {
+                    UserName = "Admin",
+                    PasswordHash = "AKPXDFk6ViCEQBmoNirTVQjz17x8PbjxjaVuwqeWNPqsH9vTVgn36cymhj/t6tbmIQ=="
+                });
 
-            context.Clients.AddRange(BuildClientsList());
+            if (!context.Clients.Any()) context.Clients.AddRange(BuildClientsList());
+            
             context.SaveChanges();
         }
 
