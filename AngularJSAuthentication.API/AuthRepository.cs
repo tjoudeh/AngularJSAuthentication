@@ -54,7 +54,7 @@ namespace AngularJSAuthentication.API
         public async Task<bool> AddRefreshToken(RefreshToken token)
         {
 
-           var existingToken = _ctx.RefreshTokens.Where(r => r.Subject == token.Subject && r.ClientId == token.ClientId).SingleOrDefault();
+           var existingToken = await _ctx.RefreshTokens.SingleOrDefaultAsync(r => r.Subject == token.Subject && r.ClientId == token.ClientId);
 
            if (existingToken != null)
            {
