@@ -55,7 +55,7 @@ namespace AngularJSAuthentication.API.Providers
         public async Task ReceiveAsync(AuthenticationTokenReceiveContext context)
         {
 
-            var allowedOrigin = context.OwinContext.Get<string>("as:clientAllowedOrigin");
+            var allowedOrigin = "*";
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
             string hashedTokenId = Helper.GetHash(context.Token);
