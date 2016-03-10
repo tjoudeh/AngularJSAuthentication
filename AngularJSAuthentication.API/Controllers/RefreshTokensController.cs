@@ -19,7 +19,8 @@ namespace AngularJSAuthentication.API.Controllers
             _repo = new AuthRepository();
         }
 
-        [Authorize(Users="Admin")]
+        //[Authorize(Users="Admin")]
+        [AllowAnonymous]
         [Route("")]
         public IHttpActionResult Get()
         {
